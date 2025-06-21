@@ -1,0 +1,55 @@
+.custom-toastr-block {
+  background: var(--toastr-bg);
+  color: var(--toastr-color);
+  width: fit-content;
+  display: flex;
+  gap: 10px;
+  padding: 7px 14px 7px 7px;
+  border-radius: 100px;
+  align-items: center;
+}
+
+.custom-toastr-icon{
+  width: 25px;
+  height: 25px;
+  padding: 3px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--toastr-color);
+}
+
+.custom-toastr-primary .custom-toastr-icon{
+  background: var(--primary);
+}
+.custom-toastr-danger .custom-toastr-icon{
+  background: var(--danger);
+}
+.custom-toastr-warning .custom-toastr-icon{
+  background: var(--warnig);
+}
+.custom-toastr-success .custom-toastr-icon{
+  background: var(--success);
+}
+
+.custom-toastr-container {
+  width: 100%;
+  position: fixed;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  transform: translateY(-40px);
+  transition: .3s ease;
+  opacity: 0;
+  z-index: 1000;
+  cursor: pointer;
+}
+.show-toastr-container {
+  transform: translateY(0) !important;
+  // transform: translateY(10px) !important;
+  opacity: 1 !important;
+}
+.custom-toastr-block{
+  pointer-events: none;
+}

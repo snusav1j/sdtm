@@ -1,0 +1,15 @@
+{
+  "name": "SDTM",
+  "short_name": "SDTM",
+  "icons": [
+    {
+      "src": ".png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "display": "standalone",
+  "background_color": "#131317",
+  "theme_color": "#131317",
+  "start_url": "/?standalone=true"
+}

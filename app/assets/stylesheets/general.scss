@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Inline:opsz,wght@10..72,100..900&family=Bytesized&family=Kode+Mono:wght@400..700&family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Press+Start+2P&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Quicksand:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Silkscreen:wght@400;700&display=swap');// font-family: "Quicksand", sans-serif; пойдет
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", serif;
+}
+
+:root {
+  --primary: #5b9aec;
+  --hover-primary: #5b9aeccc;
+  --danger: #d33e4a;
+  --hover-danger: #c23a45;
+  --default: #4b4d61;
+  --hover-default: #595a6b;
+  --success: #17a050;
+  --hover-success: #1e9750;
+  --warnig: #e0740e;
+  --hover-warnig: #d47012;
+
+  --toastr-bg: #29292b;
+  --toastr-color: #f3f3f3;
+}
+
+.col-md-1{
+  width: 8.33333333333%;
+}
+.col-md-2{
+  width: 16.6666666667%;
+}
+.col-md-3{
+  width: 25%;
+}
+.col-md-4{ 
+  width: 33.3333333333%;
+}
+.col-md-5{
+  width: 41.6666666667%;
+}
+.col-md-6{
+  width: 50%;
+}
+.col-md-7{
+  width: 58.3333333332%;
+}
+.col-md-8{
+  width: 66.6666666667%;
+}
+.col-md-9{
+  width: 7.0000000002%;
+}
+.col-md-10{
+  width: 83.3333333333%;
+}
+.col-md-11{
+  width: 91.6666666666%;
+}
+.col-md-12{
+  width: 100%;
+}
+
+.text-right{
+  text-align: right;
+}
+.text-left{
+  text-align: left;
+}
+.text-center{
+  text-align: center;
+}
