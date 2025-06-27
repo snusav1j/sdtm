@@ -1,0 +1,35 @@
+.table-block{ style: "width: fit-content;" }
+  %table.big-table
+    %thead
+      %tr
+        %th.text-muted #
+        %th
+        %th Имя
+        %th Фамилия
+        %th email
+        %th Роль
+        %th Баланс
+        %th 
+        -# %th 
+        - if current_user.dev?
+          %th 
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td.text-muted= user.id
+          %td
+            = link_to user_path(user) do
+              .profile-photo= user_image(user)
+          %td= user.firstname
+          %td= user.lastname ? user.lastname : '-'
+          %td= user.email
+          %td= user.role
+          %td= user.balance.round(2)
+          %td
+          -# %td
+          -#   = link_to user_path(user) do
+          -#     .btn.mini-btn.gradient-hover= g_icon 'visibility'
+          - if current_user.dev?
+            %td
+              = link_to edit_user_path(user) do
+                .btn.mini-btn.gradient-hover= g_icon 'edit'
