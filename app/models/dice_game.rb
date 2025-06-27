@@ -10,7 +10,7 @@ class DiceGame < ApplicationRecord
 
   def self.get_history(user=nil, show=25)
     if user
-      self.where(user_id: user.id).last(25).reverse
+      self.where(user_id: user.id).last(show).reverse
     else
       self.last(25).reverse
     end
@@ -22,11 +22,7 @@ class DiceGame < ApplicationRecord
     total_balance = user.balance
     roll_result = rand(1..100)
     multiplier = 100 / chance
-    
-    # if user.dev?
-    #   roll_result = rand(1..25)
-    # end
-
+  
     if roll_result <= chance
       game_result = RESULT_WIN
       win_amount = (bet_amount * multiplier) - bet_amount
