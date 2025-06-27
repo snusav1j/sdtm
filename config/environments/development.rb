@@ -5,8 +5,8 @@ Rails.application.configure do
 
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
-  config.hosts << "riyati.ru"
-  config.hosts << "https://riyati.ru"
+  config.hosts << "vexodus.ru"
+  config.hosts << "https://vexodus.ru"
   # Do not eager load code on boot.
   config.eager_load = false
 
