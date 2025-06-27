@@ -7,11 +7,19 @@
  * depending on specificity.
  *
  * Consider organizing styles into separate files for maintainability.
-
- *= require font-awesome
+ 
  *= require general
  *= require adaptive
- *= require home
+ *= require header
+ *= require footer
+
+ *= require font-awesome
+ *= require modal
  *= require multiple_select
  *= require custom_toastr
+ 
+ *= require home
+ *= require sidebar
+ *= require users
+ *= require messages
  */

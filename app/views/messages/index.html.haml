@@ -1,0 +1,10 @@
+%h2= "Чат с #{@recipient.email}"
+
+#messages{ data: { current_user_id: current_user.id, recipient_id: @recipient.id }, style: "height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;" }
+  - @messages.each do |message|
+    = render partial: 'messages/message', locals: { message: message, current_user: current_user }
+
+= form_with model: Message.new, url: messages_path, local: false do |f|
+  = f.hidden_field :recipient_id, value: @recipient.id
+  = f.text_area :body, rows: 3, placeholder: "Введите сообщение..."
+  = f.submit "Отправить"

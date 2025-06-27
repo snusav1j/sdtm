@@ -1,10 +1,33 @@
-!!!
+!!! 5
 %html
   %head
-    %title= "SDTM"
+    %title SDTM
+    %meta{content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no", name: "viewport"}
+    %meta{charset: "utf-8"}
+    %meta{content: "yes", name: "mobile-web-app-capable"}
+    %meta{content: "yes", name: "apple-mobile-web-app-capable"}
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-    = javascript_include_tag 'application'
+    %link{:href => "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined", :rel => "stylesheet"}
+    %link{ rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" }
+
+    = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
   %body
-    = yield
+    .container.app-container
+      #sidebar
+        = render partial: "layouts/sidebar"
+      #sidebar-overlay.hidden
+      .app-content
+        .app-header
+          = render partial: "layouts/header"
+        .app-body
+          .content
+            = yield
+      
+
+    -# .app-footer
+    -#   .content
+    -#     = render partial: "layouts/footer"
+
+    %script{ src: "https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js" }

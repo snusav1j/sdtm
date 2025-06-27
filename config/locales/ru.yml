@@ -1,0 +1,21 @@
+ru:
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      pretty: "%d %B %Y"
+      month_year: "%B %Y"
+      datetime: "%d.%m.%Y %H:%M"
+    month_names:
+      - ~
+      - Январь
+      - Февраль
+      - Март
+      - Апрель
+      - Май
+      - Июнь
+      - Июль
+      - Август
+      - Сентябрь
+      - Октябрь
+      - Ноябрь
+      - Декабрь

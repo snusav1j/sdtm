@@ -1,0 +1,7 @@
+-# = form_with model: user, url: popup_balance_users_path, method: :post, local: false, html: { id: "popup_user_balance" } do |f|
+-#   = f.hidden_field :id
+
+-#   .flex-row{ style: "align-items: baseline;" }
+-#     = f.number_field :balance, value: nil, required: true, step: 0.01, min: 0.01
+-#     - if DiceGame.all.length > 0
+-#       .small-btn.gradient-hover.btn#get_last_bet_amount.text-small{ style: "white-space: nowrap; height: 29px; align-items: center;" } Последняя ставка

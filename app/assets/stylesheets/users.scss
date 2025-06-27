@@ -1,0 +1,26 @@
+.header-profile-photo, .profile-photo{
+  width: 30px;
+  display: flex;
+  align-items: center;
+}
+.header-profile-photo img, .profile-photo img{
+  border-radius: 50%;
+}
+.user-block{
+  display: flex;
+  align-items: end;
+  gap: 7px;
+}
+.profile-image-block img, .profile-image-block{
+  border-radius: 5px;
+}
+.profile-image-block{
+  width: 300px;
+  padding: 15px;
+  background: var(--table-block-color);
+  cursor: pointer;
+}
+
+.profile-block{
+  width: 100%;
+}

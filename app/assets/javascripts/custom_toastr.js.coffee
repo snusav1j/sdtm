@@ -1,5 +1,6 @@
 window.toastr =
   _show: (status, msg) ->
+
     icons =
       success: '<i class="fa fa-check"></i>'
       danger:  '<i class="fa fa-remove"></i>'
@@ -28,11 +29,13 @@ window.toastr =
 
     document.body.prepend(toastrContainer)
 
-    setTimeout (-> toastrContainer.classList.add('show-toastr-container')), 50
+    # Функция показа — объявлена выше вызовов
+    showAnimation = ->
+      setTimeout (-> toastrContainer.classList.add('show-toastr-container')), 50
+      setTimeout (-> toastrContainer.classList.remove('show-toastr-container')), 2600
+      setTimeout (-> toastrContainer.remove()), 3100
 
-    setTimeout (-> toastrContainer.classList.remove('show-toastr-container')), 2600
-
-    setTimeout (-> toastrContainer.remove()), 3100
+    showAnimation()
 
     toastrContainer.addEventListener 'click', ->
       toastrContainer.classList.remove('show-toastr-container')

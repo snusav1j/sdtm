@@ -1,0 +1,5 @@
+- can_change = @user.has_change_rights?(current_user)
+
+.profile-block
+  .profile-image-block{ class: can_change ? "update-user-image" : '', data: { user_id: @user.id } }
+    = user_image(@user)

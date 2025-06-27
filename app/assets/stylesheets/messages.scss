@@ -1,0 +1,15 @@
+.message {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+
+  &.own {
+    background-color: var(--main-color-light-3);
+    text-align: right;
+  }
+
+  &:not(.own) {
+    background-color: var(--main-color-light-1);
+    text-align: left;
+  }
+}

@@ -1,0 +1,7 @@
+<% if @balance_updated %>
+  $('span#user_balance').html('<%= format_number @user.balance.to_f.round(2) %>')
+  $('span#user_balance').attr('data-balance', '<%= @user.balance.to_f %>')
+  modalShowByResult(true)
+<% else %>
+  modalShowByResult(false)
+<% end %>

@@ -1,0 +1,6 @@
+$ ->
+  
+
+  # setTimeout ->
+  #   modalShowByResult()
+  # , 500

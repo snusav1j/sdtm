@@ -1,0 +1,36 @@
+.swal2-modal{
+  background: var(--main-color-light-3);
+  color: var(--main-text-color);
+  // padding-bottom: 0;
+}
+.swal2-actions {
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.swal2-actions button{
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: unset !important; 
+}
+#swal2-title {
+  padding: 15px;
+  font-size: 18px;
+  // border-bottom: 1px solid #26262a;
+}
+
+.swal2-actions {
+  // border-top: 1px solid #26262a;
+  padding-top: 15px;
+  margin: 0;
+}
+
+.swal2-html-container{
+  text-align: unset;
+  padding: 15px;
+}
+
+.swal2-popup.offset-top {
+  margin-top: -350px; /* отрицательный margin поднимает окно выше */
+}

@@ -1,0 +1,7 @@
+- current_user ||= local_assigns[:current_user]
+
+.message{ data: { sender_id: message.sender.id }, class: ("own" if message.recipient != current_user) }
+  %strong= message.sender.email
+  %p= message.body
+  %small= message.recipient.id
+  %small= current_user.id

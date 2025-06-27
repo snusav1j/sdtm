@@ -1,0 +1,19 @@
+.logo
+  = link_to root_path do
+    %span.text-big SDTM
+    %span.text-muted Admin
+
+
+.nav-items
+  .nav
+    = link_to users_path do
+      .nav-item
+        %span.material-symbols-outlined group
+        %span= "Пользователи"
+    
+  .nav
+    = link_to dice_games_path do
+      .nav-item
+        %span.material-symbols-outlined casino
+        %span= "Кости"
+  

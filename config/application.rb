@@ -15,6 +15,7 @@ module Sdtm
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
+    config.i18n.default_locale = :ru
 
     # Configuration for the application, engines, and railties goes here.
     #

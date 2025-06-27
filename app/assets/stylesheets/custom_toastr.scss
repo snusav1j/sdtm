@@ -27,7 +27,7 @@
   background: var(--danger);
 }
 .custom-toastr-warning .custom-toastr-icon{
-  background: var(--warnig);
+  background: var(--warning);
 }
 .custom-toastr-success .custom-toastr-icon{
   background: var(--success);
@@ -52,4 +52,13 @@
 }
 .custom-toastr-block{
   pointer-events: none;
+}
+.custom-toastr-icon i {
+  font-size: 14px;
+  line-height: 1;
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  display: block;
+  margin: auto;
 }

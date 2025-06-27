@@ -32,6 +32,7 @@ gem 'coffee-rails'
 gem 'bootstrap'
 gem 'sassc-rails'
 gem 'rails-i18n'
+gem 'turbolinks'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -40,6 +41,7 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 gem 'telegram-bot-ruby'
+gem 'russian'
 # gem 'money'
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

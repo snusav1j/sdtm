@@ -1,41 +1,50 @@
 Rails.application.routes.draw do
-  devise_for :users, path: "", skip: [:unlocks], path_names: {
-    sign_in: 'login',
-    sign_out: 'logout',
-    sign_up: 'signup'
+  
+  devise_for :users, skip: [:unlocks], path: '', path_names: {
+    sign_in: 'sign_in',
+    sign_out: 'sign_out'
   }
+  
   devise_scope :user do
-    # Аутентификация
-    get    'signup',  to: 'devise/registrations#new',     as: :signup
-    get    'login',   to: 'devise/sessions#new',           as: :login
-    delete 'logout',  to: 'devise/sessions#destroy',       as: :logout
-  
-    # Редактирование профиля
-    get    'settings', to: 'devise/registrations#edit',   as: :edit_user
-  
-    # Восстановление пароля
-    get    'forgot',   to: 'devise/passwords#new',         as: :forgot_password
-    post   'forgot',   to: 'devise/passwords#create'
-    get    'reset',    to: 'devise/passwords#edit',        as: :edit_password
-    put    'reset',    to: 'devise/passwords#update'
-  
-    # Подтверждение почты
-    get    'confirm',  to: 'devise/confirmations#new',     as: :new_confirmation
-    post   'confirm',  to: 'devise/confirmations#create'
-    get    'confirm/verify', to: 'devise/confirmations#show', as: :confirm_verify
-  
-    # Разблокировка аккаунта
-    get    'unlock',   to: 'devise/unlocks#new',           as: :new_unlock
-    post   'unlock',   to: 'devise/unlocks#create'
-    get    'unlock/verify', to: 'devise/unlocks#show',     as: :unlock_verify
+    get 'sign_in', to: 'devise/sessions#new', as: :sign_in
+    delete 'sign_out', to: 'devise/sessions#destroy', as: :sign_out
   end
-
+  
+  ###
+  
   root "home#index"
-
-
+  
+  
   resources :home do
     collection do
-
+      
     end
-  end  
+  end
+
+  resources :users do
+    collection do
+      #dice_games
+      post  :popup_balance
+      get :popup_balance_modal
+      
+      #users
+      get :user_image_modal
+      post :update_user_image
+    end
+  end
+  
+  resources :messages do
+    collection do
+      get :load_messages
+    end
+  end
+  
+  resources :dice_games do
+    collection do
+      get :load_messages
+      get :clear_game_history
+    end
+  end
+  
+  mount ActionCable.server => '/cable'
 end

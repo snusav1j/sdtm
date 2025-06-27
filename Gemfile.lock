@@ -351,6 +351,8 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
+    russian (0.6.0)
+      i18n (>= 0.5.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -420,6 +422,9 @@ GEM
     turbo-rails (2.0.16)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
+    turbolinks (5.2.1)
+      turbolinks-source (~> 5.2)
+    turbolinks-source (5.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2025.2)
@@ -469,6 +474,7 @@ DEPENDENCIES
   rails (~> 8.0.0)
   rails-i18n
   rubocop-rails-omakase
+  russian
   sass-rails
   sassc-rails
   selenium-webdriver
@@ -482,6 +488,7 @@ DEPENDENCIES
   thruster
   toastr-rails
   turbo-rails
+  turbolinks
   tzinfo-data
   web-console
 

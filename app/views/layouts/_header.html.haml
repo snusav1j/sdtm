@@ -1,0 +1,20 @@
+.header
+  %div{ style: "display: flex; align-items: center; gap: 10px;" }
+    %button#sidebar-toggle.menu-btn.show-on-mobile= g_icon 'dehaze'
+
+  .user-info
+    - if current_user.present?
+      .flex-row-center
+        = link_to user_path(current_user) do
+          .user-block
+            .header-profile-photo= user_image current_user
+            %div
+              = current_user.fullname
+              .text-muted.text-small= current_user.user_role_id
+        %div
+          = link_to sign_out_path, method: :delete do
+            = g_icon 'logout'
+    - else
+      = link_to sign_in_path do
+        -# Войти
+        = g_icon 'login'
