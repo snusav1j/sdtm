@@ -80,6 +80,9 @@
   .show-on-mobile{
     display: block;
   }
+  .users-table{
+    max-width: 100% !important;
+  }
 
 }
 @media screen and (max-width: 1280px){
