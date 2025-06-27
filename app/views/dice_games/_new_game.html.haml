@@ -1,0 +1,54 @@
+.filled-block
+  .space-between{ style: "align-items: start;" }
+    %strong.text-big{ style: "display: flex; align-items: center; gap: 5px;" }
+      %span.material-symbols-outlined casino
+      %span DICE
+    .dice-balance.text-right 
+      Баланс:
+      %span#user_balance{ data: { balance: current_user.balance.to_f } }
+        = format_number current_user.balance.to_f.round(2)
+      - if current_user.dev?
+        %span.mini-btn.gradient-hover.btn#popup-user-balance{ data: { user_id: current_user.id } }
+          = g_icon 'add'
+
+  = form_for @dice_game, remote: true, html: { id: "dice_form" } do |f|
+
+    .row.reverse-row-mobile{ style: "gap: 30px;" }
+      .col-md-6
+        %div.bet-amount
+          .flex-row{ style: "align-items: end;" }
+            %div{ style: "width: 100%;" }
+              = f.label :bet_amount, "Ставка"
+              = f.number_field :bet_amount, step: 0.01, min: 0.01, id: "bet_amount"
+            %div{ style: "white-space: nowrap;" }
+              .small-btn.gradient-hover.btn#all_in_button{ type: "button" } All In
+
+          %div.flex-row{ style: "margin-top: 5px;" }
+            %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "half" } } /2
+            %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "one_point_five" } } /1.5
+            %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "double" } } x2
+            %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "point_one_five" } } x1.5
+
+        %button.btn.medium-btn.gradient-hover{ type: "submit", form: "dice_form", style: "margin-top: 10px; width: 100%;" }="Бросить"
+
+      .col-md-6
+        -# = render partial: "result_container"
+        #result_container
+          %h3 Результат броска:
+          #animation_container
+            #chance_bar
+            #roll_marker
+          %p#roll_text
+          %p#win_text
+        %div.chance-section
+          %span
+            %span Шанс выигрыша
+            %span#chance_value 50%
+          %input#chance_input{ type: "number", min: 1, max: 99, value: 50, class: "chance-number" }
+          = f.range_field :chance, min: 1, max: 99, value: 50, id: "chance_range"
+
+          %div.chance-presets
+            .mini-btn.btn.gradient-hover.chance-preset{ data: { chance: 10 } } 10%
+            .mini-btn.btn.gradient-hover.chance-preset{ data: { chance: 25 } } 25%
+            .mini-btn.btn.gradient-hover.chance-preset{ data: { chance: 50 } } 50%
+            .mini-btn.btn.gradient-hover.chance-preset{ data: { chance: 75 } } 75%

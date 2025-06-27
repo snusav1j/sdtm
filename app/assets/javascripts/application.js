@@ -13,3 +13,4 @@
 
 //= require home
 //= require users
+//= require dice_games

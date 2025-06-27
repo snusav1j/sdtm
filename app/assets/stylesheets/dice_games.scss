@@ -1,0 +1,64 @@
+#animation_container {
+  margin-top: 5px;
+  position: relative;
+  // width: 300px;
+  height: 50px;
+  background: #ddd;
+  border-radius: 5px;
+}
+
+#chance_bar {
+  position: absolute;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 5px 0 0 5px;
+  width: 50%;
+  
+}
+
+#roll_marker {
+  position: absolute;
+  top: -10px;
+  width: 3px;
+  height: 60px;
+  border-radius: 5px;
+  background: #757575;
+  left: 50%; 
+  transition: .3s ease;
+}
+.dice-balance{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.bet-amount {
+  margin-bottom: 10px;
+}
+
+span#popup-user-balance div{
+  font-size: 12px !important;
+}
+
+.submit-section {
+  margin-top: 15px;
+}
+
+#roll_text {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.chance-presets{
+  // margin-top: 15px;
+  display: flex;
+  gap: 5px;
+}
+
+.dice-balance{
+  margin-bottom: 25px;
+}
+
+.dice-balance #user_balance{
+  font-size: 16px;
+  font-weight: 700;
+}

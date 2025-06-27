@@ -1,0 +1,7 @@
+.center-container
+  .auto-flex-block.dice-block
+    %div.first-auto-elem
+      = render partial: "new_game"
+    %div
+      #games_history_container
+        = render partial: "games_history", locals: { history: @history }

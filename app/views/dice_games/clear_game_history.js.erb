@@ -1,0 +1,7 @@
+<% if @cleared %>
+  modalShowByResult(true)
+  $('#games_history_container').html("<%= j render partial: 'games_history', locals: { history: @history } %>");
+
+<% else %>
+  modalShowByResult(false)
+<% end %>

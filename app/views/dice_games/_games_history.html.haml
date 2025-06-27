@@ -1,0 +1,33 @@
+.table-block
+  .space-between{ style: "margin-bottom: 20px; align-items: center;" }
+    %span История
+    = link_to clear_game_history_dice_games_path, remote: true do
+      %span.btn.small-btn.gradient-hover= g_icon 'delete_history'
+  %table.big-table
+    %thead
+      %tr
+        %th.text-muted #
+        %th Ставка
+        %th Шанс
+        %th Выпало
+        %th Результат
+        -# %th Дата
+    %tbody
+      - i = 0
+      - history.each do |game|
+        - i += 1
+        %tr
+          %td.text-muted
+            = game.id
+          %td.last-bet-amount{ data: { last_bet_amount: game.bet_amount } }
+            = format_number game.bet_amount
+          %td= "#{game.chance}%"
+          %td= game.roll_result
+          %td
+            - if game.win?
+              - profit = format_number game.win_amount.round(2)
+              .text-success= "+#{profit}"
+            - else
+              - loss = format_number game.lose_amount.round(2)
+              .text-danger= "-#{loss}"
+          -# %td= small_datetime(game.created_at)

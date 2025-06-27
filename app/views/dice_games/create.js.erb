@@ -1,0 +1,26 @@
+<% if @bet_amount > 0 %>
+
+  <% if @game_played %>
+    <% if @game_played.win? %>
+      toastr.success('Вы выиграли')
+    <% end %>
+    <% if @game_played.lose? %>
+      toastr.danger('Вы проиграли')
+    <% end %>
+    <% if @game_played.draw? %>
+      toastr.primary('Ничья')
+    <% end %>
+    $('#user_balance').text("<%= format_number current_user.balance.to_f.round(2) %>");
+    $('span#user_balance').attr('data-balance', '<%= current_user.balance.to_f %>')
+    $('#result_container').show();
+    $('#roll_marker').css('left', '<%= @game_played.roll_result %>%');
+    $('#roll_text').text('Выпало: <%= @game_played.roll_result %>');
+
+    $('#games_history_container').html("<%= j render partial: 'games_history', locals: { history: @history } %>");
+  <% else %>
+    toastr.error('Недостаточно средств.');
+  <% end %>
+
+<% else %>
+  toastr.warning('Ставка не может быть меньше 0')
+<% end %>
