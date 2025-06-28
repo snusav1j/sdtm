@@ -61,10 +61,7 @@ startAutoplay = ->
       result = getCurrentResult()
       return unless result  # Ждем пока появится результат
 
-      # Если результат не поменялся и это не проигрыш — пропускаем ход
-      if result == lastProcessedResult and result != 'lose'
-        console.log 'Результат не изменился, пропуск'
-        return
+
 
       balance = getUserBalance()
       if balance < currentBetAmount
