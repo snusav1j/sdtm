@@ -1,9 +1,9 @@
 {
-  "name": "SDTM",
-  "short_name": "SDTM",
+  "name": "Vexodus",
+  "short_name": "Vexodus",
   "icons": [
     {
-      "src": ".png",
+      "src": "vexodus_mini.png",
       "sizes": "512x512",
       "type": "image/png"
     }
