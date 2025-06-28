@@ -11,6 +11,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_06_28_064419) do
+  create_table "dice_game_settings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.float "auto_play_bet_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_dice_game_settings_on_user_id"
+  end
+
   create_table "dice_games", force: :cascade do |t|
     t.integer "user_id", null: false
     t.float "chance"
@@ -21,7 +29,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_064419) do
     t.string "game_result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "auto_play_bet_amount"
     t.index ["user_id"], name: "index_dice_games_on_user_id"
   end
 
@@ -50,5 +57,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_064419) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "dice_game_settings", "users"
   add_foreign_key "dice_games", "users"
 end

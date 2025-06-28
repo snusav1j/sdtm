@@ -3,6 +3,8 @@
     %strong.text-big{ style: "display: flex; align-items: center; gap: 5px;" }
       %span.material-symbols-outlined casino
       %span DICE
+      %button.small-btn.btn.gradient-hover.dice-game-settings{ type: "button", data: { auto_play_bet_amount: current_user.auto_play_bet_amount ? current_user.auto_play_bet_amount : 0 } }
+        = g_icon('settings')
     .dice-balance.text-right 
       Баланс:
       %span#user_balance{ data: { balance: current_user.balance.to_f } }
@@ -29,7 +31,9 @@
             %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "double" } } x2
             %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "point_one_five" } } x1.5
 
-        %button.btn.medium-btn.gradient-hover{ type: "submit", form: "dice_form", style: "margin-top: 10px; width: 100%;" }="Бросить"
+        %div.flex-row
+          %button#play_button.btn.medium-btn.gradient-hover{ type: "submit", form: "dice_form", style: "margin-top: 10px; width: 100%;" }="Бросить"
+          %button.btn.medium-btn.btn-primary.autoplay_bot{ type: "button", form: "dice_form", style: "margin-top: 10px; width: fit-content;" }= g_icon('smart_toy')
 
       .col-md-6
         -# = render partial: "result_container"

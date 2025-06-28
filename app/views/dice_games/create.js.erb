@@ -18,9 +18,6 @@
 
     $('#games_history_container').html("<%= j render partial: 'games_history', locals: { history: @history } %>");
   <% else %>
-    toastr.error('Недостаточно средств.');
+    toastr.danger('Недостаточно средств.');
   <% end %>
-
-<% else %>
-  toastr.warning('Ставка не может быть меньше 0')
 <% end %>

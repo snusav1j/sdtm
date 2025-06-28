@@ -1,0 +1,6 @@
+<% if @updated %>
+  $('.dice-game-settings').attr('data-auto-play-bet-amount', '<%= current_user.auto_play_bet_amount ? current_user.auto_play_bet_amount : 0 %>')
+  modalShowByResult(true)
+<% else %>
+  modalShowByResult(false)
+<% end %>

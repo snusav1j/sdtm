@@ -1,0 +1,3 @@
+= form_with url: update_dice_game_settings_dice_games_path, method: :post, local: false, html: { id: "dice_games_settings" } do |f|
+  = f.label :auto_play_bet_amount, "Выберите ставку для автоигры"
+  = f.number_field :auto_play_bet_amount, value: nil, required: true, step: 0.01, min: 0.01, placeholder: 'Введите автоставку', value: current_user.auto_play_bet_amount

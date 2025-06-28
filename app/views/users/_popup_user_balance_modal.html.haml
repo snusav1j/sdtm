@@ -2,6 +2,6 @@
   = f.hidden_field :id
 
   .flex-row{ style: "align-items: baseline;" }
-    = f.number_field :balance, value: nil, required: true, step: 0.01, min: 0.01
+    = f.number_field :balance, value: nil, required: true, step: 0.01, min: 0.01, placeholder: 'Введите сумму'
     - if DiceGame.all.length > 0
-      .small-btn.gradient-hover.btn#get_last_bet_amount.text-small{ style: "white-space: nowrap; height: 29px; align-items: center;" } Последняя ставка
+      -# .small-btn.gradient-hover.btn#get_last_bet_amount.text-small{ style: "white-space: nowrap; height: 29px; align-items: center;" } Последняя ставка

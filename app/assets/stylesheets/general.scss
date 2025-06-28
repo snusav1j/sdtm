@@ -249,28 +249,56 @@ textarea:active{
   width: 100%;
 }
 .text-danger{
-  color: var(--danger);
+  color: var(--danger) !important;
 }
 .text-success{
-  color: var(--success);
+  color: var(--success) !important;
 }
 .text-warning{
-  color: var(--warning);
+  color: var(--warning) !important;
 }
 .text-primary{
-  color: var(--primary);
+  color: var(--primary) !important;
+}
+.text-danger span{
+  color: var(--danger) !important;
+}
+.text-success span{
+  color: var(--success) !important;
+}
+.text-warning span{
+  color: var(--warning) !important;
+}
+.text-primary span{
+  color: var(--primary) !important;
 }
 .btn-danger{
-  background: var(--danger);
+  background: var(--danger) !important;
+  transition: .3s ease;
 }
 .btn-success{
-  background: var(--success);
+  background: var(--success) !important;
+  transition: .3s ease;
 }
 .btn-warning{
-  background: var(--warning);
+  background: var(--warning) !important;
+  transition: .3s ease;
 }
 .btn-primary{
-  background: var(--primary);
+  background: var(--primary) !important;
+  transition: .3s ease;
+}
+.btn-danger:hover{
+  background: var(--hover-danger) !important;
+}
+.btn-success:hover{
+  background: var(--hover-success) !important;
+}
+.btn-warning:hover{
+  background: var(--hover-warning) !important;
+}
+.btn-primary:hover{
+  background: var(--hover-primary) !important;
 }
 .text-right{
   text-align: right;

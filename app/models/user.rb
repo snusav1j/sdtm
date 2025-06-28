@@ -1,10 +1,20 @@
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
   has_many :sent_messages, class_name: "Message", foreign_key: :sender_id, dependent: :destroy
   has_many :received_messages, class_name: "Message", foreign_key: :recipient_id, dependent: :destroy
+
   has_many :dice_games
+  has_many :dice_game_settings
+
+  def auto_play_bet_amount
+    user_dice_game_settings = DiceGameSetting.find_by(user_id: self.id)
+    if user_dice_game_settings
+      user_dice_game_settings.auto_play_bet_amount
+    else
+      nil
+    end
+  end
 
   def has_change_rights?(user)
     user.dev? || self == user

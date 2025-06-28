@@ -13,6 +13,14 @@ class DiceGamesController < ApplicationController
     end
   end
 
+  def update_dice_game_settings
+    @updated = DiceGameSetting.create_settings(current_user, params)
+  end
+
+  def dice_game_settings_modal
+
+  end
+
   def create
     @bet_amount = dice_params[:bet_amount].to_f
     @chance = dice_params[:chance].to_f

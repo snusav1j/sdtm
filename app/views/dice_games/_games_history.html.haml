@@ -23,7 +23,7 @@
             = format_number game.bet_amount
           %td= "#{game.chance}%"
           %td= game.roll_result
-          %td
+          %td#win_lose_result{ data: { win_lose: game.win? ? 'win' : 'lose' } }
             - if game.win?
               - profit = format_number game.win_amount.round(2)
               .text-success= "+#{profit}"

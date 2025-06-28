@@ -43,6 +43,8 @@ Rails.application.routes.draw do
     collection do
       get :load_messages
       get :clear_game_history
+      post :update_dice_game_settings
+      get :dice_game_settings_modal
     end
   end
   
