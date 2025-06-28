@@ -118,7 +118,10 @@ $ ->
   $(document).on 'click','#chance_range', (e) ->
     updateChance($(e.target).val())
 
-  $(document).on 'click','#chance_input', (e) ->
+  $(document).on 'change','#chance_input', (e) ->
+    updateChance($(e.target).val())
+    
+  $(document).on 'keyup','#chance_input', (e) ->
     updateChance($(e.target).val())
 
   $(document).on 'click','.chance-preset', (e) ->
