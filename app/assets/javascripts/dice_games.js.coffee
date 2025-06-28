@@ -1,5 +1,5 @@
 $ ->
-  $('#chance_range').on 'input', (e) ->
+  $(document).on 'input', '#chance_range', (e) ->
     chance = $(e.target).val()
     
     # Обновляем текст рядом с ползунком
