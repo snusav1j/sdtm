@@ -3,7 +3,7 @@
   "short_name": "Vexodus",
   "icons": [
     {
-      "src": "vexodus_mini.png",
+      "src": "icons/vexodus_mini.png",
       "sizes": "512x512",
       "type": "image/png"
     }
