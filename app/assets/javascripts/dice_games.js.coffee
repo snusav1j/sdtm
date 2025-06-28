@@ -1,30 +1,23 @@
 $ ->
   $(document).on 'input', '#chance_range', (e) ->
     chance = $(e.target).val()
-    
-    # Обновляем текст рядом с ползунком
     $('#chance_value').text("#{chance}%")
-    
-    # Меняем ширину зеленого бара в #result_container
     $('#chance_bar').css('width', "#{chance}%")
 
 
   updateChance = (val) ->
-    val = Math.min(99, Math.max(1, parseInt(val)))  # гарантируем диапазон
+    val = Math.min(99, Math.max(1, parseInt(val)))
     $('#chance_range').val(val)
     $('#chance_input').val(val)
     $('#chance_value').text("#{val}%")
     $('#chance_bar').css('width', "#{val}%")
 
-  # Слайдер
   $(document).on 'click','#chance_range', (e) ->
     updateChance($(e.target).val())
 
-  # Ручной ввод
   $(document).on 'click','#chance_input', (e) ->
     updateChance($(e.target).val())
 
-  # Быстрые кнопки
   $(document).on 'click','.chance-preset', (e) ->
     val = $(e.currentTarget).data('chance')
     updateChance(val)
