@@ -2,19 +2,38 @@
 %html
   %head
     %title SDTM
-    %meta{content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no", name: "viewport"}
-    %meta{charset: "utf-8"}
-    %meta{content: "yes", name: "mobile-web-app-capable"}
-    %meta{content: "yes", name: "apple-mobile-web-app-capable"}
+    %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no", name: "viewport" }
+    %meta{ charset: "utf-8" }
+    
+    / Android и общие PWA мета-теги
+    %meta{ content: "yes", name: "mobile-web-app-capable" }
+    
+    / iOS standalone режим
+    %meta{ content: "yes", name: "apple-mobile-web-app-capable" }
+    %meta{ content: "black-translucent", name: "apple-mobile-web-app-status-bar-style" }
+    %meta{ content: "Vexodus", name: "apple-mobile-web-app-title" }
+    
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-    %link{:href => "/manifest.json", :rel => "manifest"}
-    %link{:href => "icons/vexodus_mini.png", :rel => "icon"}
-    %link{:href => "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined", :rel => "stylesheet"}
+    
+    / PWA manifest
+    %link{ href: "/manifest.json", rel: "manifest" }
+    
+    / Иконка для браузера
+    %link{ href: "/icons/vexodus_mini.png", rel: "icon", type: "image/png" }
+    
+    / Иконки для iOS (разные размеры)
+    %link{ rel: "apple-touch-icon", sizes: "180x180", href: "/icons/apple-touch-icon-180x180.png" }
+    %link{ rel: "apple-touch-icon", sizes: "152x152", href: "/icons/apple-touch-icon-152x152.png" }
+    %link{ rel: "apple-touch-icon", sizes: "120x120", href: "/icons/apple-touch-icon-120x120.png" }
+    
+    / Шрифты и стили
+    %link{ href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined", rel: "stylesheet" }
     %link{ rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" }
 
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
+
   %body
     .container.app-container
       #sidebar
@@ -26,7 +45,6 @@
         .app-body
           .content
             = yield
-      
 
     -# .app-footer
     -#   .content
