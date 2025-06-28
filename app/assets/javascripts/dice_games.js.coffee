@@ -72,7 +72,7 @@ startAutoplay = ->
       handleResult(result)
     catch error
       console.error('Ошибка в автоигре:', error)
-  , 225
+  , 150
 
 # Обработчик клика по кнопке автоплей
 $ ->
@@ -99,7 +99,7 @@ $ ->
     autoplayTimeout = setTimeout ->
       startAutoplay()
       autoplayTimeout = null
-    , 225
+    , 150
 
 
   $(document).on 'input', '#chance_range', (e) ->
