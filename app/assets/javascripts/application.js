@@ -9,7 +9,6 @@
 //= require multiple_select
 //= require custom_toastr
 //= require sidebar
-//= require modal
 
 //= require home
 //= require users
