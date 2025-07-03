@@ -19,7 +19,12 @@
           %td.text-muted= user.id
           %td
             = link_to user_path(user) do
-              .profile-photo= user_image(user)
+              .profile-photo
+                = user_image(user)
+                - if user.online?
+                  %span.user_online
+                - else
+                  %span.user_offline
           %td= user.firstname
           %td= user.lastname ? user.lastname : '-'
           %td= user.email

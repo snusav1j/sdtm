@@ -57,6 +57,10 @@ class User < ApplicationRecord
     end
   end
 
+  def online?
+    OnlineTracker.online?(self.id)
+  end
+
   def default_user_image
     "/user_images/default_user_image.webp"
   end
