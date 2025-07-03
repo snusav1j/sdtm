@@ -8,7 +8,7 @@
   display: flex;
   margin-left: 0;
   transition: margin-left 0.3s ease;
-  height: 100vh;
+  height: 100svh;
 }
 .app-content{
   width: 100%;
@@ -137,7 +137,7 @@ img{
   padding: 15px;
   border-radius: var(--xxl-border-radius);
   // overflow-y: auto;
-  max-height: 100vh;
+  // max-height: 100svh;
   // overflow-x: hidden;
 }
 table{
