@@ -1,22 +1,25 @@
-%h2 Log in
+.autorization-block
+  .autorization-header
+    %h2= tgm(:login)
+  .autorization-body
+    .form-fields
+      = form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'autorization-form' }) do |f|
+        .field
+          = f.label :email
+          %br
+          = f.email_field :email, autofocus: true, autocomplete: "email"
 
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-  .field
-    = f.label :email
-    %br
-    = f.email_field :email, autofocus: true, autocomplete: "email"
+        .field
+          = f.label :password
+          %br
+          = f.password_field :password, autocomplete: "current-password"
 
-  .field
-    = f.label :password
-    %br
-    = f.password_field :password, autocomplete: "current-password"
+        - if devise_mapping.rememberable?
+          .checkbox-field
+            = f.check_box :remember_me
+            = f.label :remember_me
 
-  - if devise_mapping.rememberable?
-    .field
-      = f.check_box :remember_me
-      = f.label :remember_me
-
-  .actions
-    = f.submit "Log in"
+        .actions
+          %button.btn.btn-default{ type: "submit", form: "autorization-form" }= 'Войти'
 
 = render "devise/shared/links"

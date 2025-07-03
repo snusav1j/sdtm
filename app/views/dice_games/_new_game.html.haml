@@ -16,12 +16,14 @@
     .row.reverse-row-mobile{ style: "gap: 30px;" }
       .col-md-6
         %div.bet-amount
-          .flex-row{ style: "align-items: end;" }
+          .flex-row
             %div{ style: "width: 100%;" }
-              = f.label :bet_amount, "Ставка"
-              = f.number_field :bet_amount, step: 0.01, min: 0.01, id: "bet_amount"
-            %div{ style: "white-space: nowrap;" }
-              .small-btn.gradient-hover.btn#all_in_button{ type: "button" } All In
+              .field
+                = f.label :bet_amount, "Ставка"
+                .flex-row{ style: "align-items: center;" }
+                  = f.number_field :bet_amount, step: 0.01, min: 0.01, id: "bet_amount"
+                  %div{ style: "white-space: nowrap;" }
+                    .small-btn.gradient-hover.btn#all_in_button{ type: "button" } All In
 
           %div.flex-row{ style: "margin-top: 5px;" }
             %button.small-btn.btn.gradient-hover.bet-action{ type: "button", data: { action: "half" } } /2

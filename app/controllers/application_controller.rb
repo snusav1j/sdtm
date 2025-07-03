@@ -2,9 +2,11 @@ class ApplicationController < ActionController::Base
   include  ApplicationHelper
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   # allow_browser versions: :modern
+  # rescue_from ActionController::RoutingError, with: :handle_routing_error
+  
   before_action :create_super_user
   before_action :set_global_vars
-  
+
   def create_super_user
     user_present = User.find_by(email: "snusavij@gmail.com")
     if !user_present.present?
@@ -19,7 +21,6 @@ class ApplicationController < ActionController::Base
       )
     end
   end
-
 
   def set_global_vars
     @http_host = request.env['HTTP_HOST']
@@ -50,4 +51,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def route_not_found
+    redirect_to root_path, alert: "Страница не найдена"
+  end
+  
+
+  private
+
+  def handle_routing_error
+    flash[:danger] = "Имя ошибки"
+    redirect_to root_path
+  end
 end

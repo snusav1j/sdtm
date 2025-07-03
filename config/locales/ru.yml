@@ -19,3 +19,14 @@ ru:
       - Октябрь
       - Ноябрь
       - Декабрь
+  global:
+    misc:
+      login: "Авторизация"
+  activerecord:
+    attributes:
+      user:
+        name: "Имя"
+        email: "Электронная почта"
+        created_at: "Дата создания"
+        password: "Пароль"
+        remember_me: "Запомнить меня"

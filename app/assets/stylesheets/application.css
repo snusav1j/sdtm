@@ -17,11 +17,12 @@
  *= require modal
  *= require multiple_select
  *= require custom_toastr
+ *= require sweetalert
  
  *= require home
  *= require sidebar
  *= require dice_games
  *= require users
- *= require sweetalert
+ *= require sessions
  *= require messages
  */

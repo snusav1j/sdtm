@@ -21,3 +21,13 @@
 .app-header {
   z-index: 1555;
 }
+.logo-block{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.logo-text{
+  font-size: 18px;
+  color: var(--primary) !important;
+  font-weight: 700;
+}

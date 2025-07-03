@@ -1,7 +1,10 @@
-
-.auto-flex-block.dice-block
-  %div
-    = render partial: "new_game"
-  %div
-    #games_history_container
-      = render partial: "games_history", locals: { history: @history }
+.row
+  .col-md-6
+    .dice-block
+      %div
+        = render partial: "new_game"
+      %div
+        #games_history_container
+          = render partial: "games_history", locals: { history: @history }
+  .col-md-6
+    .text-muted= "...В работе"

@@ -34,9 +34,10 @@
       .app-header
         = render partial: "layouts/header"
       .app-container
-        #sidebar
-          = render partial: "layouts/sidebar"
-        #sidebar-overlay.hidden
+        - if current_user
+          #sidebar
+            = render partial: "layouts/sidebar"
+          #sidebar-overlay.hidden
         .app-body
           .content
             = yield
@@ -44,3 +45,12 @@
     -# .app-footer
     -#   .content
     -#     = render partial: "layouts/footer"
+
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    #{flash[:danger] ? "window.toastr.danger(#{flash[:danger].to_json});" : ''}
+    #{flash[:success] ? "window.toastr.success(#{flash[:success].to_json});" : ''}
+    #{flash[:warning] ? "window.toastr.warning(#{flash[:warning].to_json});" : ''}
+    #{flash[:primary] ? "window.toastr.primary(#{flash[:primary].to_json});" : ''}
+  });

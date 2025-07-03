@@ -10,9 +10,16 @@ Rails.application.routes.draw do
     delete 'sign_out', to: 'devise/sessions#destroy', as: :sign_out
   end
   
-  ###
+  get '/404', to: 'errors#not_fosaund'
+  get '/500', to: 'errors#internasal_server_error'
+  get '/400', to: 'errors#bad_reqsauest'
+
+  # match '*unmatched', to: 'application#route_not_found', via: :all
   
   root "home#index"
+  
+  ###
+  
   
   
   resources :home do
@@ -47,6 +54,6 @@ Rails.application.routes.draw do
       get :dice_game_settings_modal
     end
   end
-  
+
   mount ActionCable.server => '/cable'
 end
