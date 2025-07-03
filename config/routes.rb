@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users, skip: [:unlocks], path: '', path_names: {
     sign_in: 'sign_in',
     sign_out: 'sign_out'
-  }
+  }, controllers: { sessions: 'users/sessions' }
   
   devise_scope :user do
     get 'sign_in', to: 'devise/sessions#new', as: :sign_in
