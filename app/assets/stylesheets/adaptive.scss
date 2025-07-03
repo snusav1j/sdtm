@@ -78,11 +78,11 @@
 }
 }
 .show-on-mobile{
-  display: none;
+  display: none !important;
 }
 @media screen and (max-width: 767px){
   .show-on-mobile{
-    display: block;
+    display: block !important;
   }
   .users-table{
     max-width: 100% !important;

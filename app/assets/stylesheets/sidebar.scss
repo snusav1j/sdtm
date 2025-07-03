@@ -75,20 +75,23 @@
 }
 .nav-item.active span, .nav-item.active a, .nav-item.active strong{
   color: var(--primary) !important;
+  
 }
 .nav-item.active{
   border-right: 4px solid var(--primary);
+  background: var(--transperent-primary) !important;
 }
 .nav-item{
   text-align: center;
   padding: 10px;
-  transition: .3s ease;
+  transition: .2s ease;
   color: var(--main-text-color-2) !important;
   border-radius: var(--xl-border-radius) 0 0 var(--xl-border-radius);
 }
-// .nav-item:hover{
-//   background: #36404b;
-// }
+.nav-item.inactive:hover{
+  background: #e9e9e9 !important;
+  border-right: 4px solid #acacac;
+}
 
 .side-bar-menu{
   display: flex;

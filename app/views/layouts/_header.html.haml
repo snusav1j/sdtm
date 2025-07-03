@@ -7,13 +7,15 @@
         .logo-block
           .logo-icon
             = logo_icon
-          -# .logo-text= "Vexodus"
   .user-info
+    = Rails.env.production?
     - if current_user.present?
       .flex-row-center
         = link_to user_path(current_user) do
           .user-block
-            .header-profile-photo= user_image current_user
+            .header-profile-photo
+              = user_image current_user
+              %span.user_online
             %div
               = current_user.fullname
               .text-muted.text-small= current_user.user_role_id
