@@ -14,6 +14,9 @@
 .swal2-actions button{
   height: 34px;
 }
+div:where(.swal2-container) button:where(.swal2-close):hover{
+  color: #dbdbdb !important;
+}
 .swal2-actions .btn-primary,
 .swal2-actions .btn-success,
 .swal2-actions .btn-danger,
