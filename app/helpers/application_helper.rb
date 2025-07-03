@@ -65,7 +65,7 @@ module ApplicationHelper
   end
     
   def active_sidebar?(url_path)
-    url_path.include?("/#{@cur_url}")
+    url_path.include?("/#{@cur_url}") || url_path == @cur_url
   end
 end
 
