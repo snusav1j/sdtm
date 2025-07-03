@@ -8,15 +8,18 @@ class ApplicationController < ActionController::Base
   before_action :set_global_vars
 
   def create_super_user
-    User.create!(
-      email: 'danek@gmail.com',
-      password: '123456',
-      password_confirmation: '123456',
-      role: 'dev',
-      firstname: 'sdtm',
-      lastname: 'dev',
-      balance: 1000
-    )
+    user_present = User.find_by(email: "snusavij@gmail.com")
+    if !user_present.present?
+      User.create!(
+        email: 'snusavij@gmail.com',
+        password: '123456',
+        password_confirmation: '123456',
+        role: 'dev',
+        firstname: 'sdtm',
+        lastname: 'dev',
+        balance: 1000
+      )
+    end
   end
 
   def set_global_vars
