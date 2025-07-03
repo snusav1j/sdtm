@@ -8,10 +8,12 @@
   justify-content: space-between;
   padding: 0 15px;
 }
-
+.swal2-container{
+  z-index: 1111 !important;
+}
 .swal2-actions button{
   padding: 6px 8px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   border: unset !important; 
 }
 #swal2-title {

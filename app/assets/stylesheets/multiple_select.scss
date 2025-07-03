@@ -11,7 +11,7 @@ $primary: var(--brand-color);
         position: relative;
         z-index: 2;
         padding: 8px 12px 2px 12px;
-        border-radius: 5px;
+        border-radius: var(--border-radius);
         background: var(--input-bg);
         font-size: 14px;
         min-height: 40px;

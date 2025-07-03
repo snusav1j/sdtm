@@ -30,13 +30,13 @@
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
 
   %body
-    .container.app-container
-      #sidebar
-        = render partial: "layouts/sidebar"
-      #sidebar-overlay.hidden
-      .app-content
-        .app-header
-          = render partial: "layouts/header"
+    .container
+      .app-header
+        = render partial: "layouts/header"
+      .app-container
+        #sidebar
+          = render partial: "layouts/sidebar"
+        #sidebar-overlay.hidden
         .app-body
           .content
             = yield

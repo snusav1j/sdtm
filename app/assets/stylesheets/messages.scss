@@ -1,7 +1,7 @@
 .message {
   margin-bottom: 10px;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
 
   &.own {
     background-color: var(--main-color-light-3);

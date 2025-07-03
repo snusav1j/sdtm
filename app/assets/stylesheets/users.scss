@@ -12,7 +12,7 @@
   gap: 7px;
 }
 .profile-image-block img, .profile-image-block{
-  border-radius: 5px;
+  border-radius: var(--border-radius);
 }
 .profile-image-block{
   width: 300px;

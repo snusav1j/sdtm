@@ -3,6 +3,7 @@ initSidebar = ->
   sidebar = document.getElementById "sidebar"
   overlay = document.getElementById "sidebar-overlay"
   toggleBtn = document.getElementById "sidebar-toggle"
+  header = document.querySelector('.app-header')
 
   return unless sidebar and overlay and toggleBtn
 
@@ -19,6 +20,7 @@ initSidebar = ->
     if target.closest("#sidebar-toggle")
       event.preventDefault()
       event.stopPropagation()
+      header.style.zIndex  = '1000'
       toggleSidebar()
       return
 
@@ -27,6 +29,8 @@ initSidebar = ->
       sidebar.classList.remove "active"
       overlay.classList.remove "active"
       toggleBtn.style.display = "block"
+      header.style.zIndex  = '1555'
+
       return
 
     if sidebar.classList.contains("active") and
@@ -36,6 +40,7 @@ initSidebar = ->
       sidebar.classList.remove "active"
       overlay.classList.remove "active"
       toggleBtn.style.display = "block"
+      header.style.zIndex  = '1555'
 
   document.addEventListener "click", @clickHandler
 

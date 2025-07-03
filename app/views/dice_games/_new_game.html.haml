@@ -1,8 +1,6 @@
 .filled-block
   .space-between{ style: "align-items: start;" }
     %strong.text-big{ style: "display: flex; align-items: center; gap: 5px;" }
-      %span.material-symbols-outlined casino
-      %span DICE
       %button.small-btn.btn.gradient-hover.dice-game-settings{ type: "button", data: { auto_play_bet_amount: current_user.auto_play_bet_amount ? current_user.auto_play_bet_amount : 0 } }
         = g_icon('settings')
     .dice-balance.text-right 

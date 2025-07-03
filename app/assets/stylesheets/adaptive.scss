@@ -72,6 +72,10 @@
   .reverse-row-mobile{
     flex-direction: column-reverse !important;
   }
+.nav-item span, .nav-item a, .nav-item strong{
+  color: var(--main-text-color-2) !important;
+  font-size: 16px !important;
+}
 }
 .show-on-mobile{
   display: none;
@@ -83,7 +87,19 @@
   .users-table{
     max-width: 100% !important;
   }
-
+  .header{
+    padding: 10px !important;
+  }
+  #sidebar{
+    margin: 0 !important;
+    border-radius: var(--xxl-border-radius-right) !important;
+  }
+  .app-container{
+    flex-direction: column;
+  }
+  .nav-item span, .nav-item a, .nav-item strong{
+    font-size: 15px !important;
+  }
 }
 @media screen and (max-width: 1280px){
   .hide-on-laptop{

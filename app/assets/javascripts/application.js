@@ -14,4 +14,6 @@
 //= require home
 //= require users
 //= require sweetalert
+//= require header
 //= require dice_games
+
