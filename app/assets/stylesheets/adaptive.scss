@@ -93,7 +93,7 @@
   #sidebar{
     margin: 0 !important;
     height: 100%;
-    border-radius: var(--xxl-border-radius-right) !important;
+    border-radius: unset;
   }
   .app-container{
     flex-direction: column;
