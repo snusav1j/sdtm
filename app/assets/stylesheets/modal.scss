@@ -12,9 +12,30 @@
   z-index: 1777 !important;
 }
 .swal2-actions button{
+  height: 34px;
+}
+.swal2-actions .btn-primary,
+.swal2-actions .btn-success,
+.swal2-actions .btn-danger,
+.swal2-actions .btn-warning{
   padding: 6px 8px;
   border-radius: var(--border-radius);
   border: unset !important; 
+}
+.swal2-actions, .btn-default{
+  padding: 6px 8px;
+  border-radius: var(--border-radius);
+}
+.swal2-modal{
+  padding: 0;
+}
+.swal2-actions{
+  padding-top: unset !important;
+  padding: 15px !important;
+  border-top: 2px solid var(--border-color-3) !important;
+}
+h2#swal2-title{
+  border-bottom: 2px solid var(--border-color-3) !important;
 }
 #swal2-title {
   padding: 15px;

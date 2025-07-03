@@ -2,8 +2,8 @@ window.modalShow = (htmlContent, title='title', form_id='', class_name='', width
 
   swalWithBootstrapButtons = Swal.mixin
     customClass:
-      confirmButton: "btn btn-success #{class_name}"
-      cancelButton: "btn btn-danger"
+      confirmButton: "btn btn-primary #{class_name}"
+      cancelButton: "btn btn-default"
       popup: "offset-top"
     buttonsStyling: false
 
@@ -33,8 +33,8 @@ window.modalShowByResult = (result) ->
   swalWithBootstrapButtons = Swal.mixin
     customClass:
       popup: "offset-top"
-    #   confirmButton: "btn btn-success"
-    #   cancelButton: "btn btn-danger"
+    #   confirmButton: "btn btn-primary"
+    #   cancelButton: "btn btn-default"
     buttonsStyling: false
     showCloseButton: true
 

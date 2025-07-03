@@ -61,11 +61,9 @@ startAutoplay = ->
       result = getCurrentResult()
       return unless result  # Ждем пока появится результат
 
-
-
       balance = getUserBalance()
       if balance < currentBetAmount
-        toastr.error("Баланс #{balance} меньше ставки #{currentBetAmount}, автоигра остановлена")
+        toastr.danger("Баланс #{balance} меньше ставки #{currentBetAmount}, автоигра остановлена")
         stopAutoplay()
         return
 
