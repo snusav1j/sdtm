@@ -8,7 +8,8 @@ Rails.application.configure do
 
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
   config.eager_load = true
-
+  config.action_cable.url = "wss://vexodus.ru/cable"
+  config.action_cable.allowed_request_origins = [ 'https://vexodus.ru', 'http://vexodus.ru' ]
   # Full error reports are disabled.
   config.consider_all_requests_local = false
   config.exceptions_app = self.routes

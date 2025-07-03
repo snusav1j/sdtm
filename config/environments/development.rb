@@ -7,6 +7,7 @@ Rails.application.configure do
   config.enable_reloading = true
   config.hosts << "vexodus.ru"
   config.hosts << "https://vexodus.ru"
+
   # Do not eager load code on boot.
   config.eager_load = false
 
