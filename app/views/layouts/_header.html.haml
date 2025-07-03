@@ -8,9 +8,6 @@
           .logo-icon
             = logo_icon
   .user-info
-    - user = User.find_by_id(1)
-
-    = OnlineTracker.online?(user.id)
     - if current_user.present?
       .flex-row-center
         = link_to user_path(current_user) do

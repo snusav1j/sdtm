@@ -31,24 +31,19 @@
   width: 100%;
 }
 span.user_online {
+  background: var(--success);
+}
+
+span.user_offline, span.user_online{
   max-width: 10px; max-height: 10px; 
   min-width: 10px; min-height: 10px; 
   width: 10px; height: 10px;
-  background: var(--success);
+
   border-radius: 50%;
-  
   position: absolute;
-  bottom: 0;
-  right: 0
+  bottom: 1px;
+  right: 1px;
 }
 span.user_offline {
-  max-width: 10px; max-height: 10px; 
-  min-width: 10px; min-height: 10px; 
-  width: 10px; height: 10px;
   background: var(--danger);
-  border-radius: 50%;
-  
-  position: absolute;
-  bottom: 0;
-  right: 0
 }
