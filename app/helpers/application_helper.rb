@@ -63,10 +63,9 @@ module ApplicationHelper
     user ||= current_user
     image_tag user.user_image_url
   end
-
     
   def active_sidebar?(url_path)
-    url_path.include?(@cur_url)
+    url_path.include?("/#{@cur_url}")
   end
 end
 
