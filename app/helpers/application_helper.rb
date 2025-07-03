@@ -51,6 +51,10 @@ module ApplicationHelper
 
   # user
 
+  def logo_icon
+    image_tag "/icons/vexodus_mini.png"
+  end
+
   def g_icon icon_name
     content_tag(:span, icon_name, class: "material-symbols-outlined g-icon")
   end

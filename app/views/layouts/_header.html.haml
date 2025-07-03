@@ -4,7 +4,7 @@
       %button#sidebar-toggle.menu-btn.show-on-mobile= g_icon 'dehaze'
     .logo.hide-on-mobile
       = link_to root_path do
-        %span.text-big Vexodus
+        .logo-icon= logo_icon
   .user-info
     - if current_user.present?
       .flex-row-center
