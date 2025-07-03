@@ -1,19 +1,26 @@
 .side-bar-menu
-  .side-bar-main-menu.with-hidden-scrollbar-y
-    .nav-items
-      - if current_user && current_user.dev?
-        .nav
-          = link_to users_path do
-            .nav-item{ class: active_sidebar?(users_path) ? 'active' : 'inactive' }
-              = g_icon(:group)
-              %strong= "Пользователи"
-        
-      - if current_user && current_user.dev?
-        .nav
-          = link_to dice_games_path do
-            .nav-item{ class: active_sidebar?(dice_games_path) ? 'active' : 'inactive' }
-              = g_icon(:casino)
-              %strong= "Кости"
+  %div
+    .show-on-mobile
+      = link_to root_path do
+        .sidebar-header.text-center
+          .logo-block{ style: "justify-content: center;" }
+            .logo-icon
+              = logo_icon
+    .side-bar-main-menu.with-hidden-scrollbar-y
+      .nav-items
+        - if current_user && current_user.dev?
+          .nav
+            = link_to users_path do
+              .nav-item{ class: active_sidebar?(users_path) ? 'active' : 'inactive' }
+                = g_icon(:group)
+                %strong= "Пользователи"
+          
+        - if current_user && current_user.dev?
+          .nav
+            = link_to dice_games_path do
+              .nav-item{ class: active_sidebar?(dice_games_path) ? 'active' : 'inactive' }
+                = g_icon(:casino)
+                %strong= "Кости"
 
   .side-bar-dop-menu
     .nav-items
