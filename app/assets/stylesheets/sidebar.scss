@@ -3,8 +3,8 @@
   // height: 100%;
   background: var(--main-color-light-3);
   // padding: 15px 0;
-  margin: 15px 0 15px 15px;
-  border-radius: var(--xxl-border-radius);
+  // margin: 15px 0 15px 15px;
+  // border-radius: var(--xxl-border-radius);
   transition: transform 0.3s ease;
   z-index: 1222;
 
@@ -31,10 +31,6 @@
   border: none;
   // color: #333;
   cursor: pointer;
-}
-
-#sidebar.active ~ .app-container {
-  margin-left: 300px;
 }
 
 #sidebar .logo{

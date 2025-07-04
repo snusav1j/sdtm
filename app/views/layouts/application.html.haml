@@ -7,7 +7,6 @@
     
     %meta{ content: "yes", name: "mobile-web-app-capable" }
     
-
     %meta{ content: "yes", name: "apple-mobile-web-app-capable" }
     %meta{ content: "black-translucent", name: "apple-mobile-web-app-status-bar-style" }
     %meta{ content: "Vexodus", name: "apple-mobile-web-app-title" }
@@ -30,14 +29,15 @@
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
 
   %body
-    .container
-      .app-header
-        = render partial: "layouts/header"
+    .body-container
+      - if current_user
+        #sidebar
+          = render partial: "layouts/sidebar"
+        #sidebar-overlay.hidden
+
       .app-container
-        - if current_user
-          #sidebar
-            = render partial: "layouts/sidebar"
-          #sidebar-overlay.hidden
+        .app-header
+          = render partial: "layouts/header"
         .app-body
           .content
             = yield

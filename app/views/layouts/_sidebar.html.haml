@@ -1,11 +1,10 @@
 .side-bar-menu
   %div
-    .show-on-mobile
-      = link_to root_path do
-        .sidebar-header.text-center
-          .logo-block{ style: "justify-content: center;" }
-            .logo-icon
-              = logo_icon
+    = link_to root_path do
+      .sidebar-header.text-center
+        .logo-block{ style: "justify-content: center;" }
+          .logo-icon
+            = logo_icon
     .side-bar-main-menu.with-hidden-scrollbar-y
       .nav-items
         - if current_user && current_user.dev?

@@ -1,0 +1,13 @@
+.row
+  .col-md-12
+    .edit-user-title
+      = link_to user_path(@user) do
+        %span.text-muted.text-xxl= fa_icon "arrow-left"
+      .space-between{ style: "align-items: center;" }
+        %div
+          %span.text-xxl.text-bold Редактировать пользователя
+        %div
+          %button.btn-primary.small-btn.gradien-hover{ type: 'submit', form: 'user-form' }
+            %span.hide-on-mobile= "Сохранить"
+            = g_icon("check")
+    = render 'form'

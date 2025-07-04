@@ -1,6 +1,6 @@
 class OnlineTracker
   ONLINE_USERS_KEY = "online_users".freeze
-  TIMEOUT = 2.minutes
+  TIMEOUT = 5.minutes
 
   def self.mark_online(user_id)
     Redis.current.hset(ONLINE_USERS_KEY, user_id, Time.current.to_i)

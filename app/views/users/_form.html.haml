@@ -1,0 +1,21 @@
+- can_change = @user.has_change_rights?(current_user)
+
+.user-form-block
+  = form_for @user,  html: { id: 'user-form' } do |f|
+    .row
+      .col-md-6.user-info-block
+        .row
+          .col-md-6
+            .field
+              = f.label "Имя"
+              = f.text_field :firstname, placeholder: "Имя", required: false, autocomplete: "new-password"
+          .col-md-6
+            .field
+              = f.label "Фамилия"
+              = f.text_field :lastname, placeholder: "Фамилия", required: false, autocomplete: "new-password"
+        .row
+          .col-md-12
+            .field
+              = f.label "Почта"
+              = f.text_field :email, placeholder: "Почта", type: :email, required: false, autocomplete: "new-password"
+      -# .col-md-6.user-settings-block

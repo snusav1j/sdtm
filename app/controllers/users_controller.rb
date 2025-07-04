@@ -21,7 +21,16 @@ class UsersController < ApplicationController
   end
   
   def update
+    @params = user_params
     
+    @user = User.find_by_id(params[:id])
+    @updated = @user.update(user_params)
+    redirect_to edit_user_path(@user.id)
+    if @updated
+      flash[:success] = "Данные обновлены"
+    else
+      flash[:danger] = "Произошла ошибка"
+    end
   end
 
   def edit
@@ -56,13 +65,11 @@ class UsersController < ApplicationController
 
   private
 
-  def users_params
-    params.require(:user).permit()
-  end
-
   def set_user
     @user = User.find(params.expect(:id))
   end
 
-
+  def user_params
+    params.require(:user).permit(:firstname, :lastname, :role, :email, :password, :confirm_password, :balance)
+  end
 end

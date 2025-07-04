@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   before_action :create_super_user
   before_action :set_global_vars
 
+  # def mark_online
+  #   OnlineTracker.mark_online(current_user) if current_user.present?
+  # end
+
   def create_super_user
     user_present = User.find_by(email: "snusavij@gmail.com")
     if !user_present.present?

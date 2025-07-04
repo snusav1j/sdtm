@@ -1,5 +1,27 @@
 - can_change = @user.has_change_rights?(current_user)
 
-.profile-block
-  .profile-image-block{ class: can_change ? "update-user-image" : '', data: { user_id: @user.id } }
-    = user_image(@user)
+.user-info-panel
+  #user_id{ style: "display: none !important;" }= @user.id
+  .back-to-users
+    - user_back_link = can_change ? users_path : root_path
+
+    = link_to user_back_link do
+      %span.text-muted.text-xxl= fa_icon "arrow-left"
+  
+  .profile-cover
+    = @user.cover_picture
+  .profile-body
+    .profile-picture
+      .user-avatar
+        .profile-image-block{ class: can_change ? "update-user-image" : '', data: { user_id: @user.id } }
+          = user_image(@user)
+    .user-desc
+      %div
+        = @user.firstname
+        %span.hide-on-laptop= @user.lastname
+        #user-id.text-muted.text-big= @user.user_login_id
+      - if can_change || current_user == @user
+        = link_to edit_user_path(@user) do
+          .btn.small-btn.gradient-hover= g_icon 'edit'
+    .user-registered-info
+      .text-muted= @user.registered_info

@@ -1,12 +1,13 @@
 .header
   .flex-row{ style: "align-items: center;" }
     %div{ style: "display: flex; align-items: center; gap: 10px;" }
-      %button#sidebar-toggle.menu-btn.show-on-mobile= g_icon 'dehaze'
-    .logo.hide-on-mobile
-      = link_to root_path do
-        .logo-block
-          .logo-icon
-            = logo_icon
+      - if current_user
+        %button#sidebar-toggle.menu-btn.show-on-mobile= g_icon 'dehaze'
+    -# .logo.hide-on-mobile
+    -#   = link_to root_path do
+    -#     .logo-block
+    -#       .logo-icon
+    -#         = logo_icon
   .user-info
     - if current_user.present?
       .flex-row-center

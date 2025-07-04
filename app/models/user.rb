@@ -57,6 +57,18 @@ class User < ApplicationRecord
     end
   end
 
+  def cover_picture
+    
+  end
+
+  def user_login_id
+    "(#{self.role}) ##{self.id}"
+  end
+
+  def profile_id
+    "#{self.email} ##{self.id}"
+  end
+
   def online?
     OnlineTracker.online?(self.id)
   end
