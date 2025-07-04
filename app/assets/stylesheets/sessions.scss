@@ -1,9 +1,20 @@
 .autorization-block{
   width: 500px;
   margin: 0 auto;
-  padding: 15px;
+  // padding: 15px;
   border-radius: var(--xxl-border-radius);
+  background-color: var(--table-block-color);
 }
-.autorization-block button{
+.autorization-block .autorization-block button{
+  width: 100%;
+}
+.autorization-block .autorization-body,.autorization-block .autorization-header{
+  padding: 15px;
+}
+.autorization-block .autorization-header{
+  text-align: center;
+  border-bottom: 3px solid var(--border-color-3);
+}
+.autorization-block button.login-btn{
   width: 100%;
 }

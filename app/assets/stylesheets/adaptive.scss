@@ -60,7 +60,11 @@
     width: 100%;
   }
 }
-
+@media screen and (max-width: 550px){
+  .autorization-block{
+    width: 100% !important;
+  }
+}
 @media screen and (max-width: 991px){
   .hide-on-mobile{
     display: none !important;
