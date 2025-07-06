@@ -111,3 +111,45 @@
     display: none !important;
   }
 }
+
+
+
+@media screen and (max-width: 500px){
+  .profile-body .user-avatar img {
+
+    width: 100px !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+  }
+  .profile-body .user-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+  }
+  .profile-cover{
+    height: 110px !important;
+  }
+  .user-desc{
+    margin-left: 140px !important;
+  }
+  .user-desc div, .user-desc span{
+    font-size: 18px !important;
+  }
+  .user-desc #user-id{
+    font-size: 12px !important;
+  }
+}
+
+@media screen and (max-width: 350px){
+  .user-desc div, .user-desc span{
+  font-size: 16px !important;
+  }
+  .user-desc #user-id{
+    font-size: 12px !important;
+  }
+  .user-desc{
+    margin-left: 130px !important;
+  }
+}

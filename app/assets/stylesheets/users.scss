@@ -151,16 +151,16 @@ span.user_offline {
 .profile-body .user-avatar img{
   width: 120px;
   height: 120px;
-  min-height: 120px !important;
-  max-height: 120px !important;
+  min-height: 120px;
+  max-height: 120px;
   z-index: 1111;
   font-size: 70px;
 }
 .profile-body .user-avatar{
   width: 120px;
   height: 120px;
-  min-height: 120px !important;
-  max-height: 120px !important;
+  min-height: 120px;
+  max-height: 120px;
   z-index: 1111;
   font-size: 70px;
 }
@@ -183,7 +183,7 @@ span.user_offline {
   font-size: 24px;
 }
 .user-desc{
-  display: flex;
+  // display: flex;
   margin-left: 160px;
   justify-content: space-between;
   align-items: center;

@@ -5,9 +5,12 @@
   .back-to-users
     - user_back_link = can_change ? users_path : root_path
 
-    = link_to user_back_link do
-      %span.text-muted.text-xxl= fa_icon "arrow-left"
-  
+    .space-between
+      = link_to user_back_link do
+        %span.text-muted.text-xxl= fa_icon "arrow-left"
+      - if can_change || current_user == @user
+        = link_to edit_user_path(@user) do
+          .small-btn.btn-primary= g_icon 'edit'
   .profile-cover
     = @user.cover_picture
   .profile-body
@@ -16,15 +19,14 @@
         .profile-image-block{ class: can_change ? "update-user-image" : '', data: { user_id: @user.id } }
           = user_image(@user)
     .user-desc
-      %div
-        = @user.firstname
-        %span.hide-on-laptop= @user.lastname
+      .space-between{ style: "width: 100%;" }
+        %div
+          = @user.firstname
+          %span.hide-on-laptop= @user.lastname
         - if @user != current_user
           = link_to messages_path(recipient_id: @user.id) do
-            %button.small-btn.btn.gradient-hover= g_icon("chat_bubble")
-        #user-id.text-muted.text-big= @user.user_login_id
-      - if can_change || current_user == @user
-        = link_to edit_user_path(@user) do
-          .small-btn.btn-primary= g_icon 'edit'
+            .btn.small-btn.chat-user-btn= g_icon("chat_bubble")
+      #user-id.text-muted.text-big= @user.user_login_id
+
     .user-registered-info
       .text-muted= @user.registered_info
