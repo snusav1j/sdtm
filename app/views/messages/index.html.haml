@@ -2,8 +2,8 @@
 
 #messages_block
   #messages{ data: { current_user_id: current_user.id, recipient_id: @recipient.id }, style: "height: 300px; overflow-y: scroll;" }
-    -# - @messages.each do |message|
-    = render partial: 'messages/messages_list', locals: { messages: @messages, current_user: current_user }
+    - @messages.each do |message|
+      = render partial: 'messages/message', locals: { message: message, current_user: current_user }
 
   = form_with model: Message.new, url: messages_path, local: false, html: { id: "messages-form" } do |f|
     = f.hidden_field :recipient_id, value: @recipient.id

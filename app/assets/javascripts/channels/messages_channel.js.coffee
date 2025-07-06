@@ -19,6 +19,7 @@ if recipient_id
 
     received: (data) ->
       # console.log "Получено сообщение:", data
+
       if window.location.href.indexOf('messages') >= 0
         current_id = parseInt($('#messages').attr('data-current-user-id'))
         msg = $(data.message)
