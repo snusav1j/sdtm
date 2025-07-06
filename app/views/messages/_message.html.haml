@@ -1,7 +1,28 @@
 - current_user ||= local_assigns[:current_user]
+- prev_message ||= nil
+- show_sender_info = prev_message.nil? || prev_message.sender_id != message.sender_id
 
-.message{ data: { sender_id: message.sender.id }, class: ("own" if message.recipient != current_user) }
-  %strong= message.sender.email
-  %p= message.body
-  %small= message.recipient.id
-  %small= current_user.id
+- message_class = show_sender_info ? 'display: flex;' : ''
+- message_class += message.recipient != current_user ? "own" : ""
+
+.message-block{ class: ("own" if message.recipient != current_user) }
+  .message{ data: { sender_id: message.sender.id }, class: message_class }
+
+    - if show_sender_info
+      .message-sender-icon
+        = link_to user_path(message.sender) do
+          .profile-photo
+            = user_image(message.sender)
+            - if message.sender.online?
+              %span.user_online
+            - else
+              %span.user_offline
+      .message-content
+        .message-head{ style: "width: 100%;" }
+          .space-between{ style: "align-items: center;" }
+            %strong= message.sender.fullname
+            .text-small.text-muted{ style: "margin-top: 5px;" }= small_datetime message.created_at
+    - else
+      .message-content
+    .message-body
+      %p= message.body

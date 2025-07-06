@@ -1,2 +1,4 @@
+- prev_message = nil
 - messages.each do |message|
-  = render partial: 'messages/message', locals: { message: message, current_user: current_user }
+  = render partial: 'messages/message', locals: { message: message, prev_message: prev_message, current_user: current_user }
+  - prev_message = message

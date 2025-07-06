@@ -19,9 +19,12 @@
       %div
         = @user.firstname
         %span.hide-on-laptop= @user.lastname
+        - if @user != current_user
+          = link_to messages_path(recipient_id: @user.id) do
+            %button.small-btn.btn.gradient-hover= g_icon("chat_bubble")
         #user-id.text-muted.text-big= @user.user_login_id
       - if can_change || current_user == @user
         = link_to edit_user_path(@user) do
-          .btn.small-btn.gradient-hover= g_icon 'edit'
+          .small-btn.btn-primary= g_icon 'edit'
     .user-registered-info
       .text-muted= @user.registered_info
