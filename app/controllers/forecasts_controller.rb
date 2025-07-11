@@ -4,7 +4,7 @@ class ForecastsController < ApplicationController
 
   def index
     @forecast = Forecast.new
-    @forecasts = Forecast.all
+    @forecasts = Forecast.all.reverse
   end
 
   def create

@@ -9,5 +9,7 @@ ready = ->
         results = data.map (item) -> { id: item.symbol, text: "#{item.symbol} - #{item.name}" }
         results: results
     minimumInputLength: 2
+    language:
+      inputTooShort: (args) -> ""
 
 $(document).on 'turbolinks:load turbo:load', ready

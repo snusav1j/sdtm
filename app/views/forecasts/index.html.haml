@@ -1,19 +1,21 @@
 .filled-block
-  %h1 Прогноз на криптовалюту
-
   = simple_form_for :forecast, url: forecasts_path do |f|
-    .form-group
-      = f.label :symbol, "Монета"
-      = f.select :symbol, [], {}, { id: "symbol-select", class: "form-control" }
+    .form-fields
+      .form-group
+        .field
+          = f.label :symbol, "Монета"
+          = f.input :symbol, collection: [], input_html: { id: "symbol-select", class: "form-control" }, include_blank: 'Выберите монету', label: false
 
-    .form-group
-      = f.label :timeframe, "Таймфрейм"
-      = f.input :timeframe, collection: [['1m','1m'], ['5m','5m'], ['1h','1h'], ['1d','1d']], include_blank: false
 
-    = f.button :submit, "Прогнозировать", class: "btn btn-primary"
+      .form-group
+        .field
+          = f.label :timeframe, "Таймфрейм"
+          = f.input :timeframe, collection: [['1m','1m'], ['3m','3m'], ['5m','5m'], ['15m','15m'], ['1h','1h'], ['2h','2h'], ['1d','1d']], include_blank: false, label: false
 
-  %div
-    %strong История прогнозов
+      = f.button :submit, "Прогнозировать", class: "btn btn-primary"
+
+  %div{ style: "margin: 10px 0;" }
+    %strong Прогнозы
   .table-block.users-table.with-hidden-scrollbar
     %table.big-table
       %thead

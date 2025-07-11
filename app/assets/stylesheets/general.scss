@@ -294,14 +294,83 @@ select:-webkit-autofill:focus {
 input[type="submit"] {
   cursor: pointer;
 }
+s:not(:last-child){
+  margin-bottom: 10px !important;
+}
 .form-fields .field,
 .form-fields .checkbox-field{
   margin-bottom: 10px !important;
 }
+.field span.select2.select2-container.select2-container--default,
 .field input,
 .field select,
 .field textarea{
   margin-top: 5px;
+}
+/* Основной стиль — поле выбора */
+.select2-container--default .select2-selection--single {
+  background-color: var(--input-bg) !important;
+  border: 1px solid var(--input-border) !important;
+  border-radius: var(--border-radius) !important;
+  height: auto !important;
+  padding: 10px !important;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 700;
+  color: var(--main-text-color) !important;
+  box-shadow: none !important;
+  transition: border 0.2s ease;
+}
+
+/* Текст внутри */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--main-text-color) !important;
+  line-height: 1.5 !important;
+}
+
+/* Убрать иконку стрелки или оставить по желанию */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 100%;
+  right: 5px !important;
+  top: 8px !important;
+}
+// .select2-results__option{
+//   background: #f1f1f1 !important;
+// }
+.select2-results__option:not(:last-child){
+  margin-bottom: 5px !important;
+}
+/* Стилизация выпадающего списка */
+.select2-container--default .select2-dropdown {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--border-radius);
+  font-family: "Roboto Mono", monospace;
+  font-weight: 700;
+  color: var(--main-text-color);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Пункт внутри dropdown */
+.select2-container--default .select2-results__option {
+  padding: 8px 12px;
+  color: var(--main-text-color);
+  background-color: var(--input-bg);
+  transition: background 0.2s ease;
+}
+input.select2-search__field{
+  background: #f4f4f4f4 !important;
+  padding: 10px !important;
+}
+/* При наведении */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: var(--main-color-light-2);
+  color: var(--main-text-color);
+}
+
+/* Выбранный пункт */
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: var(--main-color-light-3);
+  color: var(--main-text-color-dark);
 }
 input, select, textarea{
   border: 1px solid var(--input-border) !important;
