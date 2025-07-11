@@ -80,13 +80,14 @@ class Forecast < ApplicationRecord
 
   # --- ema ---
   def ema(period = 14)
-    return [] if closes.size < period
-
+    data = closes
+    return [] unless data.is_a?(Array) && data.size >= period
+  
     k = 2.0 / (period + 1)
     ema_values = []
-    closes.each_with_index do |close, i|
+    data.each_with_index do |close, i|
       if i == period - 1
-        sma = closes[0...period].sum / period.to_f
+        sma = data[0...period].sum / period.to_f
         ema_values << sma
       elsif i >= period
         ema_prev = ema_values.last

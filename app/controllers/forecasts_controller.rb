@@ -22,18 +22,18 @@ class ForecastsController < ApplicationController
     @forecast = Forecast.create!(
       symbol: symbol,
       timeframe: timeframe,
-      closes: safe_to_json(result[:closes]),
-      signals: safe_to_json(result[:signals]),
+      closes: result[:closes],            # передаем массив
+      signals: result[:signals],
       direction: result[:direction].to_s,
       probability: result[:probability].to_f,
       secondary_probability: result[:secondary_probability].to_f,
       expected_range: result[:expected_range].is_a?(Array) ? result[:expected_range] : [0, 0],
       target_price: result[:target_price].to_f,
-      sma: safe_to_json(result[:sma]),
-      ema: safe_to_json(result[:ema]),
-      rsi: safe_to_json(result[:rsi]),
-      macd: safe_to_json(result[:macd], default: { macdLine: [], signalLine: [] }),
-      stochastic_rsi: safe_to_json(result[:stochastic_rsi])
+      sma: result[:sma],
+      ema: result[:ema],
+      rsi: result[:rsi],
+      macd: result[:macd],
+      stochastic_rsi: result[:stochastic_rsi]
     )
 
     redirect_to forecast_path(@forecast)
@@ -42,11 +42,12 @@ class ForecastsController < ApplicationController
   def show
     @forecast = Forecast.find(params[:id])
 
-    @closes_json = parse_json_safe(@forecast.closes.presence || '[]', [])
-    @expected_range_json = @forecast.expected_range.presence || [0, 0]
-    @macd_json = parse_json_safe(@forecast.macd.presence || '{}', { 'macdLine' => [], 'signalLine' => [] })
-    @rsi_json = parse_json_safe(@forecast.rsi.presence || '[]', [])
-    @stochastic_rsi_json = parse_json_safe(@forecast.stochastic_rsi.presence || '[]', [])
+    # Уже десериализованные значения, сразу используем
+    @closes_json = @forecast.closes || []
+    @expected_range_json = @forecast.expected_range || [0, 0]
+    @macd_json = @forecast.macd || { 'macdLine' => [], 'signalLine' => [] }
+    @rsi_json = @forecast.rsi || []
+    @stochastic_rsi_json = @forecast.stochastic_rsi || []
   end
 
   def coins_search
@@ -76,18 +77,17 @@ class ForecastsController < ApplicationController
   end
 
   def safe_to_json(value, default: [])
-    if value.nil?
-      default.to_json
+    obj = if value.nil?
+      default
     elsif value.is_a?(String)
-      # Проверим, можно ли распарсить и вернуть как есть
       begin
         JSON.parse(value)
-        value
       rescue JSON::ParserError
-        default.to_json
+        default
       end
     else
-      value.to_json
+      value
     end
+    obj.to_json
   end
 end

@@ -12,6 +12,7 @@ class CryptoTaService
     Rails.logger.warn "Failed to fetch data: #{e.message}"
     []
   end
+  
 
   def volatility(data, period = 14)
     return 0 if data.size < period
