@@ -3,13 +3,17 @@
 
 %h2 Прогноз по #{@forecast.symbol} (#{@forecast.timeframe})
 %h4 Прогноз направления: #{@forecast.direction}
-%h4 Вероятность изменения: #{@forecast.probability}%
+%h4 Вероятность изменения: #{@forecast.probability}% #
+%h4
+  Дополнительная вероятность коррекции: #{@forecast.secondary_probability}%
+  - if @forecast.secondary_probability == 0
+    %span.text-small.text-muted - RSI и Stochastic RSI не выходят за заданные пороги перекупленности (например, 80) или перепроданности (например, 20).
+%h4 Целевая цена: #{@forecast.target_price}
 %h4 Ожидаемый диапазон цены: #{@forecast.expected_range&.first} — #{@forecast.expected_range&.last}
 
 %br
 
 %h4 Сигналы
-
 - @forecast.signals.each do |signal|
   %div= signal
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_10_193918) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_11_040842) do
   create_table "dice_game_settings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.float "auto_play_bet_amount"
@@ -51,6 +51,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_193918) do
     t.text "rsi"
     t.text "stochastic_rsi"
     t.text "macd"
+    t.float "secondary_probability", default: 0.0, null: false
+    t.float "target_price", default: 0.0, null: false
   end
 
   create_table "messages", force: :cascade do |t|

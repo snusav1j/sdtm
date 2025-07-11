@@ -14,6 +14,12 @@ class ForecastsController < ApplicationController
     service = CryptoTaService.new(symbol, timeframe)
     result = service.analyze
 
+    target_price = if result[:expected_range].is_a?(Array) && result[:expected_range].size == 2
+      ((result[:expected_range][0] + result[:expected_range][1]) / 2.0).round(4)
+    else
+      nil
+    end
+
     @forecast = Forecast.create!(
       symbol: symbol,
       timeframe: timeframe,
@@ -21,7 +27,9 @@ class ForecastsController < ApplicationController
       signals: result[:signals].to_json,
       direction: result[:direction],
       probability: result[:probability],
+      secondary_probability: result[:secondary_probability], # <-- добавили
       expected_range: result[:expected_range],
+      target_price: target_price,                            # <-- добавили
       sma: result[:sma].to_json,
       ema: result[:ema].to_json,
       rsi: result[:rsi].to_json,

@@ -1,14 +1,13 @@
 class Forecast < ApplicationRecord
   validates :symbol, :timeframe, presence: true
 
+  # --- signals ---
   def signals
     val = read_attribute(:signals)
     return [] if val.nil? || val.empty?
-  
-    # Если уже массив — вернуть
+
     return val if val.is_a?(Array)
-  
-    # Если строка, пытаемся распарсить JSON
+
     parsed = JSON.parse(val) rescue nil
     parsed.is_a?(Array) ? parsed : []
   end
@@ -17,29 +16,44 @@ class Forecast < ApplicationRecord
     write_attribute(:signals, value.to_json)
   end
 
+  # --- closes ---
   def closes
     val = read_attribute(:closes)
     return [] if val.nil? || val.empty?
-  
-    # Если уже массив — вернуть
+
     return val if val.is_a?(Array)
-  
-    # Если строка, попробуем распарсить
-    parsed = JSON.parse(val)
-    # Защитимся — если после парсинга массив — вернуть, иначе пустой
+
+    parsed = JSON.parse(val) rescue []
     parsed.is_a?(Array) ? parsed : []
-  rescue JSON::ParserError
-    []
   end
 
-  # Простая скользящая средняя
+  def closes=(value)
+    write_attribute(:closes, value.to_json)
+  end
+
+  # --- expected_range ---
+  def expected_range
+    val = read_attribute(:expected_range)
+    return [0, 0] if val.nil? || val.empty?
+
+    return val if val.is_a?(Array)
+
+    parsed = JSON.parse(val) rescue [0, 0]
+    parsed.is_a?(Array) && parsed.size == 2 ? parsed : [0, 0]
+  end
+
+  def expected_range=(value)
+    write_attribute(:expected_range, value.to_json)
+  end
+
+  # --- sma ---
   def sma(period = 14)
     return [] if closes.size < period
 
     closes.each_cons(period).map { |slice| (slice.sum / period.to_f).round(4) }
   end
 
-  # Экспоненциальная скользящая средняя
+  # --- ema ---
   def ema(period = 14)
     return [] if closes.size < period
 
@@ -57,7 +71,7 @@ class Forecast < ApplicationRecord
     ema_values.map { |v| v.round(4) }
   end
 
-  # RSI (Relative Strength Index)
+  # --- rsi ---
   def rsi(period = 14)
     return [] if closes.size <= period
 
@@ -88,7 +102,7 @@ class Forecast < ApplicationRecord
     Array.new(period, nil) + rsi_values
   end
 
-  # MACD (Moving Average Convergence Divergence)
+  # --- macd ---
   def macd(short_period = 12, long_period = 26, signal_period = 9)
     return { macdLine: [], signalLine: [] } if closes.size < long_period + signal_period
 
@@ -123,7 +137,7 @@ class Forecast < ApplicationRecord
     }
   end
 
-  # Stochastic RSI
+  # --- stochastic_rsi ---
   def stochastic_rsi(k_period = 14, d_period = 3)
     rsi_values = rsi(k_period)
     return [] if rsi_values.compact.size < k_period
@@ -153,5 +167,33 @@ class Forecast < ApplicationRecord
     end
 
     d_values
+  end
+
+  # --- secondary_probability ---
+  def secondary_probability
+    val = read_attribute(:secondary_probability)
+    val.nil? ? 0.0 : val.to_f
+  end
+
+  def secondary_probability=(value)
+    write_attribute(:secondary_probability, value.to_f)
+  end
+
+  # --- target_price ---
+  def target_price
+    val = read_attribute(:target_price)
+    val.nil? ? 0.0 : val.to_f
+  end
+
+  def target_price=(value)
+    write_attribute(:target_price, value.to_f)
+  end
+
+  def secondary_probability
+    read_attribute(:secondary_probability) || 0.0
+  end
+
+  def target_price
+    read_attribute(:target_price)
   end
 end

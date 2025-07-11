@@ -11,9 +11,9 @@
 
   = f.button :submit, "Прогнозировать", class: "btn btn-primary"
 
-
 %div
   %strong История прогнозов
+
 .table-block.users-table.with-hidden-scrollbar
   %table.big-table
     %thead
@@ -23,6 +23,7 @@
         %th Таймфрейм
         %th Направление
         %th Вероятность (%)
+        %th Доп. вероятность (%)
         %th Ожидаемый минимум
         %th Ожидаемый максимум
         %th Средняя цель
@@ -39,6 +40,7 @@
           %td= forecast.timeframe
           %td= forecast.direction
           %td= forecast.probability
+          %td= forecast.secondary_probability
           %td= min_price
           %td= max_price
           %td= avg_target.round(4)
@@ -51,3 +53,4 @@
           %td
             = link_to forecast_path(forecast), data: { turbo_frame: "_top" } do
               .btn.mini-btn.gradient-hover= g_icon 'visibility'
+
