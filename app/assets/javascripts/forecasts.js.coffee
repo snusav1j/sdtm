@@ -32,18 +32,19 @@ document.addEventListener 'DOMContentLoaded', ->
 
   ctx = chartElement.getContext('2d')
 
-  minVal = Math.min.apply(Math, closes)
-  maxVal = Math.max.apply(Math, closes)
+  # --- min и max для оси цены только по closes (цена без прогноза!) ---
+  minVal = Math.min.apply(Math, closes) * 0.995
+  maxVal = Math.max.apply(Math, closes) * 1.005
 
+  # --- Прогнозные линии и заливка ---
   forecastMin = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[0]))
   forecastMax = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[1]))
   forecastAvg = Array(closes.length).fill(null).concat(Array(5).fill((expectedRange[0] + expectedRange[1]) / 2.0))
 
-  # Заливка прогноза (только область прогноза, без линий)
   forecastFill = forecastAvg.map (val, idx) ->
     if idx >= closes.length then val else null
 
-  # Плагин вертикальной линии
+  # Плагин вертикальной линии (оставляем без изменений)
   Chart.register
     id: 'verticalLinePlugin'
     afterDraw: (chart) ->
@@ -167,8 +168,8 @@ document.addEventListener 'DOMContentLoaded', ->
           title:
             display: true
             text: 'Цена'
-          min: minVal * 0.995
-          max: maxVal * 1.005
+          min: minVal
+          max: maxVal
         macd:
           type: 'linear'
           display: true

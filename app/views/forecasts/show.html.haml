@@ -26,12 +26,12 @@
   width: 800,
   height: 400,
   data: {
-    closes: @closes_json.to_json.html_safe,
-    expectedRange: @expected_range_json.to_json.html_safe,
+    closes: raw(@closes_json.to_json),
+    expected_range: raw(@expected_range_json.to_json),
     direction: @forecast.direction,
     label: @forecast.symbol,
-    macd: @macd_json.to_json.html_safe,
-    rsi: @rsi_json.to_json.html_safe,
-    stochasticRsi: @stochastic_rsi_json.to_json.html_safe
+    macd: raw(@macd_json.to_json),
+    rsi: raw(@rsi_json.to_json),
+    stochastic_rsi: raw(@stochastic_rsi_json.to_json)
   }
 }
