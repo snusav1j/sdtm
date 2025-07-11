@@ -2,7 +2,15 @@ class Forecast < ApplicationRecord
   validates :symbol, :timeframe, presence: true
 
   def signals
-    JSON.parse(read_attribute(:signals) || '[]')
+    val = read_attribute(:signals)
+    return [] if val.nil? || val.empty?
+  
+    # Если уже массив — вернуть
+    return val if val.is_a?(Array)
+  
+    # Если строка, пытаемся распарсить JSON
+    parsed = JSON.parse(val) rescue nil
+    parsed.is_a?(Array) ? parsed : []
   end
 
   def signals=(value)

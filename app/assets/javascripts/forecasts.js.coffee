@@ -152,3 +152,4 @@ document.addEventListener 'DOMContentLoaded', ->
           max: 100
           grid:
             drawOnChartArea: false
+
