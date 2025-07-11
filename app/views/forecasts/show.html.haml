@@ -1,42 +1,59 @@
-= link_to forecasts_path do
-  %span.text-muted.text-xxl= fa_icon "arrow-left"
+.space-between{ style: "align-items: center; margin-bottom: 15px;" }
+  = link_to forecasts_path do
+    %span.text-muted.text-xxl= fa_icon "arrow-left"
 
-= button_to "Обновить прогноз", forecast_path(@forecast), method: :patch, class: "btn btn-warning", form: { data: { turbo: false } }
+  = button_to "Обновить прогноз", forecast_path(@forecast), method: :patch, class: "btn-primary small-btn", form: { data: { turbo: false } }
+.filled-block
+  .row
+    .col-md-6
+      %div
+        %span Прогноз по 
+        %strong #{@forecast.symbol} (#{@forecast.timeframe})
+      %div
+        %span Прогноз направления: 
+        %strong #{@forecast.direction}
+      %div
+        %span Вероятность изменения: 
+        %strong #{@forecast.probability}%
+      %div
+        %span Дополнительная вероятность коррекции: 
+        %strong #{@forecast.secondary_probability}%
+        - if @forecast.secondary_probability.to_f == 0
+          %span.text-small.text-muted
+            RSI и Stochastic RSI не выходят за заданные пороги перекупленности (например, 80) или перепроданности (например, 20).
+      %div
+        %span Целевая цена: 
+        %strong #{@forecast.target_price}
+      %div
+        %span Ожидаемый диапазон цены: 
+        %strong #{@expected_range_json[0]}
+        %span — 
+        %strong #{@expected_range_json[1]}
 
-%h2 Прогноз по #{@forecast.symbol} (#{@forecast.timeframe})
-%h4 Прогноз направления: #{@forecast.direction}
-%h4 Вероятность изменения: #{@forecast.probability}%
-%h4
-  Дополнительная вероятность коррекции: #{@forecast.secondary_probability}%
-  - if @forecast.secondary_probability.to_f == 0
-    %span.text-small.text-muted
-      RSI и Stochastic RSI не выходят за заданные пороги перекупленности (например, 80) или перепроданности (например, 20).
-%h4 Целевая цена: #{@forecast.target_price}
-%h4 Ожидаемый диапазон цены: #{@expected_range_json[0]} — #{@expected_range_json[1]}
+    .col-md-6.text-right
 
-%br/
+      %div{ style: "margin-bottom: 5px;" } Сигналы:
+      - if @forecast.signals.present?
+        - @forecast.signals.each do |signal|
+          %div
+            %strong= signal
+      - else
+        Нет
 
-%h4 Сигналы
-- if @forecast.signals.present?
-  - @forecast.signals.each do |signal|
-    %div= signal
-- else
-  Нет
-
-%canvas#priceChart{
-  width: 800,
-  height: 400,
-  data: {
-    opens: @opens_json.to_json,
-    highs: @highs_json.to_json,
-    lows: @lows_json.to_json,
-    closes: @closes_json.to_json,
-    candles: @candles_json.to_json,
-    expectedRange: @expected_range_json.to_json,
-    direction: @forecast.direction,
-    label: @forecast.symbol,
-    macd: @macd_json.to_json,
-    rsi: @rsi_json.to_json,
-    stochasticrsi: @stochastic_rsi_json.to_json
+  %canvas#priceChart{
+    width: 800,
+    height: 400,
+    data: {
+      opens: @opens_json.to_json,
+      highs: @highs_json.to_json,
+      lows: @lows_json.to_json,
+      closes: @closes_json.to_json,
+      candles: @candles_json.to_json,
+      expectedRange: @expected_range_json.to_json,
+      direction: @forecast.direction,
+      label: @forecast.symbol,
+      macd: @macd_json.to_json,
+      rsi: @rsi_json.to_json,
+      stochasticrsi: @stochastic_rsi_json.to_json
+    }
   }
-}

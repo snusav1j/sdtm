@@ -23,6 +23,7 @@
  *= require sidebar
  *= require dice_games
  *= require users
+ *= require forecasts
  *= require sessions
  *= require messages
  */

@@ -184,6 +184,7 @@ img{
 .btn{
   width: fit-content;
   border: 2px solid var(--border-color-1);
+  white-space: nowrap;
   cursor: pointer;
 }
 .filled-block{
@@ -555,7 +556,7 @@ button{
   border: unset;
   background: var(--main-color-light);
   color: var(--main-text-color);
-  
+  white-space: nowrap;
   cursor: pointer;
   border: none;       /* Убирает рамку */
   outline: none;      /* Убирает обводку при фокусе */
@@ -572,14 +573,17 @@ button:active {
 .large-btn{
   padding: 15px 20px;
   border-radius: 20px;
+  white-space: nowrap;
 }
 .medium-btn{
   padding: 10px 15px;
   border-radius: var(--border-radius);
+  white-space: nowrap;
 }
 .small-btn {
   padding: 5px 10px;
   border-radius: var(--border-radius);
+  white-space: nowrap;
   display: inline-flex;
   // align-items: center;
   gap: 5px;

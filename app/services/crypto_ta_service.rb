@@ -4,7 +4,6 @@ class CryptoTaService
     @timeframe = timeframe
   end
 
-  # Возвращаем хеш с массивами для opens, highs, lows, closes, volumes
   def fetch_data
     url = URI("https://api.binance.com/api/v3/klines?symbol=#{@symbol}&interval=#{@timeframe}&limit=100")
     response = Net::HTTP.get(url)
