@@ -14,12 +14,6 @@ class ForecastsController < ApplicationController
     service = CryptoTaService.new(symbol, timeframe)
     result = service.analyze
 
-    target_price = if result[:expected_range].is_a?(Array) && result[:expected_range].size == 2
-      ((result[:expected_range][0] + result[:expected_range][1]) / 2.0).round(4)
-    else
-      nil
-    end
-
     @forecast = Forecast.create!(
       symbol: symbol,
       timeframe: timeframe,
@@ -27,9 +21,9 @@ class ForecastsController < ApplicationController
       signals: result[:signals].to_json,
       direction: result[:direction],
       probability: result[:probability],
-      secondary_probability: result[:secondary_probability], # <-- добавили
+      secondary_probability: result[:secondary_probability],
       expected_range: result[:expected_range],
-      target_price: target_price,                            # <-- добавили
+      target_price: result[:target_price],
       sma: result[:sma].to_json,
       ema: result[:ema].to_json,
       rsi: result[:rsi].to_json,
@@ -42,6 +36,13 @@ class ForecastsController < ApplicationController
 
   def show
     @forecast = Forecast.find(params[:id])
+
+    # Безопасный парсинг JSON здесь, чтобы не делать в HAML
+    @closes_json = parse_json_safe(@forecast.closes, [])
+    @expected_range_json = @forecast.expected_range.presence || [0, 0]
+    @macd_json = parse_json_safe(@forecast.macd, { 'macdLine' => [], 'signalLine' => [] })
+    @rsi_json = parse_json_safe(@forecast.rsi, [])
+    @stochastic_rsi_json = parse_json_safe(@forecast.stochastic_rsi, [])
   end
 
   def coins_search
@@ -57,5 +58,15 @@ class ForecastsController < ApplicationController
     end
 
     render json: coins.map { |c| { symbol: c['symbol'], name: c['baseAsset'] } }
+  end
+
+  private
+
+  def parse_json_safe(raw, fallback)
+    return fallback if raw.blank?
+
+    JSON.parse(raw)
+  rescue JSON::ParserError, TypeError
+    fallback
   end
 end

@@ -7,13 +7,12 @@
 
   .form-group
     = f.label :timeframe, "Таймфрейм"
-    = f.input :timeframe, collection: [['1m','1m'],['5m','5m'],['1h','1h'],['1d','1d']], include_blank: false
+    = f.input :timeframe, collection: [['1m','1m'], ['5m','5m'], ['1h','1h'], ['1d','1d']], include_blank: false
 
   = f.button :submit, "Прогнозировать", class: "btn btn-primary"
 
 %div
   %strong История прогнозов
-
 .table-block.users-table.with-hidden-scrollbar
   %table.big-table
     %thead
@@ -23,7 +22,7 @@
         %th Таймфрейм
         %th Направление
         %th Вероятность (%)
-        %th Доп. вероятность (%)
+        %th Доп. вероятность коррекции (%)
         %th Ожидаемый минимум
         %th Ожидаемый максимум
         %th Средняя цель
@@ -33,17 +32,17 @@
       - @forecasts.each do |forecast|
         - min_price = forecast.expected_range&.first || 0
         - max_price = forecast.expected_range&.last || 0
-        - avg_target = (min_price.to_f + max_price.to_f) / 2
+        - avg_target = ((min_price.to_f + max_price.to_f) / 2.0).round(4)
         %tr
           %td.text-muted= forecast.id
           %td= forecast.symbol
           %td= forecast.timeframe
           %td= forecast.direction
           %td= forecast.probability
-          %td= forecast.secondary_probability
+          %td= forecast.secondary_probability || 0
           %td= min_price
           %td= max_price
-          %td= avg_target.round(4)
+          %td= avg_target
           %td
             - if forecast.signals.present?
               - forecast.signals.each do |signal|
@@ -53,4 +52,3 @@
           %td
             = link_to forecast_path(forecast), data: { turbo_frame: "_top" } do
               .btn.mini-btn.gradient-hover= g_icon 'visibility'
-

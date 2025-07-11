@@ -18,6 +18,7 @@ class CryptoTaService
     Math.sqrt(variance)
   end
 
+
   def analyze
     closes = fetch_data
     signals = []
@@ -25,15 +26,16 @@ class CryptoTaService
     forecast = Forecast.new(closes: closes.to_json)
 
     rsi_values = forecast.rsi
-    sma_values = forecast.sma
-    ema_values = forecast.ema
-    macd_data = forecast.macd
     stochastic_rsi_values = forecast.stochastic_rsi
 
     last_rsi = rsi_values.compact.last || 50
+    last_stoch = stochastic_rsi_values.compact.last || 0.5
+
+    # Сигналы RSI
     signals << "Buy (RSI)" if last_rsi < 30
     signals << "Sell (RSI)" if last_rsi > 70
 
+    sma_values = forecast.sma
     direction = if sma_values.size >= 2
                   sma_values[-1] > sma_values[-2] ? "Up" : "Down"
                 else
@@ -44,24 +46,21 @@ class CryptoTaService
     vol = volatility(closes, 14)
 
     if closes.size >= 15
-      recent_changes = closes.each_cons(2).map { |prev, curr| ((curr - prev).abs) }
+      recent_changes = closes.each_cons(2).map { |prev, curr| (curr - prev).abs }
       avg_change = recent_changes.last(14).sum / 14.0
       probability = ((avg_change / (vol.zero? ? 1 : vol)) * 100).round(2)
     else
       probability = 0.0
     end
 
-    # --- Расчёт дополнительной вероятности (secondary_probability) ---
-    last_stoch = stochastic_rsi_values.compact.last || 0.5
-    last_stoch_pct = last_stoch * 100
+    # Расчёт дополнительной вероятности коррекции (secondary_probability)
+    avg_oscillator = (last_rsi + last_stoch * 100) / 2.0
 
-    secondary_prob = 0.0
-    if last_rsi > 80 || last_stoch_pct > 80
-      secondary_prob = ((last_rsi - 80) + (last_stoch_pct - 80)) / 2.0
-    elsif last_rsi < 20 || last_stoch_pct < 20
-      secondary_prob = ((20 - last_rsi) + (20 - last_stoch_pct)) / 2.0
-    end
-    secondary_prob = secondary_prob.clamp(0, 100).round(2)
+    correction_prob = if avg_oscillator >= 50
+                        ((avg_oscillator - 50) / 50.0 * 100).round(2)
+                      else
+                        ((50 - avg_oscillator) / 50.0 * 100).round(2)
+                      end
 
     last_price = closes.last || 0
     delta = vol * 2
@@ -72,17 +71,20 @@ class CryptoTaService
                        [(last_price - delta).round(4), (last_price).round(4)]
                      end
 
+    target_price = ((expected_range[0] + expected_range[1]) / 2.0).round(4)
+
     {
       closes: closes,
       signals: signals,
       direction: direction,
       probability: probability,
-      secondary_probability: secondary_prob,
+      secondary_probability: correction_prob,
       expected_range: expected_range,
+      target_price: target_price,
       sma: sma_values,
-      ema: ema_values,
+      ema: forecast.ema,
       rsi: rsi_values,
-      macd: macd_data,
+      macd: forecast.macd,
       stochastic_rsi: stochastic_rsi_values
     }
   end
