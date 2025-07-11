@@ -1,4 +1,4 @@
-$ ->
+ready = ->
   $('#symbol-select').select2
     ajax:
       url: '/forecasts/coins_search'
@@ -10,3 +10,4 @@ $ ->
         results: results
     minimumInputLength: 2
 
+$(document).on 'turbolinks:load turbo:load', ready

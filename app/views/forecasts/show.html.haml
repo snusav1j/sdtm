@@ -1,3 +1,7 @@
+= link_to forecasts_path do
+  %span.text-muted.text-xxl= fa_icon "arrow-left"
+
+= button_to "Обновить прогноз", forecast_path(@forecast), method: :patch, class: "btn btn-warning", form: { data: { turbo: false } }
 %h2 Прогноз по #{@forecast.symbol} (#{@forecast.timeframe})
 %h4 Прогноз направления: #{@forecast.direction}
 %h4 Вероятность изменения: #{@forecast.probability}%
@@ -12,26 +16,22 @@
 %br/
 
 %h4 Сигналы
-- begin
-  - parsed_signals = JSON.parse(@forecast.signals || '[]') rescue []
-  - if parsed_signals.present?
-    - parsed_signals.each do |signal|
-      %div= signal
-  - else
-    .text-muted Нет
-- rescue
-  .text-danger Ошибка при обработке сигналов
+- if @forecast.signals.present?
+  - @forecast.signals.each do |signal|
+    %div= signal
+- else
+  Нет
 
 %canvas#priceChart{
   width: 800,
   height: 400,
   data: {
-    closes: raw(@closes_json.to_json),
-    expected_range: raw(@expected_range_json.to_json),
+    closes: raw(@closes_json.to_json.html_safe),
+    expectedRange: raw(@expected_range_json.to_json.html_safe),
     direction: @forecast.direction,
     label: @forecast.symbol,
-    macd: raw(@macd_json.to_json),
-    rsi: raw(@rsi_json.to_json),
-    stochastic_rsi: raw(@stochastic_rsi_json.to_json)
+    macd: raw(@macd_json.to_json.html_safe),
+    rsi: raw(@rsi_json.to_json.html_safe),
+    stochasticrsi: raw(@stochastic_rsi_json.to_json.html_safe)
   }
 }

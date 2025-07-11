@@ -1,5 +1,5 @@
 
-//= require jquery_ujs
+
 //= require actioncable
 //= require turbolinks
 

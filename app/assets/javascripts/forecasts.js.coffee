@@ -1,5 +1,5 @@
-document.addEventListener 'DOMContentLoaded', ->
-
+ready = ->
+  console.log 1233
   chartElement = document.getElementById('priceChart')
   return unless chartElement
 
@@ -11,7 +11,7 @@ document.addEventListener 'DOMContentLoaded', ->
       fallback
 
   closes = parseJson(chartElement.dataset.closes, [])
-  expectedRange = parseJson(chartElement.dataset.expectedRange, [0, 0])
+  expectedRange = parseJson(chartElement.dataset.expectedrange, [0, 0])
   direction = chartElement.dataset.direction || 'Up'
   macd = parseJson(chartElement.dataset.macd, { macdLine: [], signalLine: [] })
   rsi = parseJson(chartElement.dataset.rsi, [])
@@ -32,19 +32,15 @@ document.addEventListener 'DOMContentLoaded', ->
 
   ctx = chartElement.getContext('2d')
 
-  # --- min и max для оси цены только по closes (цена без прогноза!) ---
-  minVal = Math.min.apply(Math, closes) * 0.995
-  maxVal = Math.max.apply(Math, closes) * 1.005
+  # minVal = Math.min.apply(Math, closes) * 0.995
+  # maxVal = Math.max.apply(Math, closes) * 1.005
+  minVal = Math.min(Math.min.apply(Math, closes), expectedRange[0]) * 0.995
+  maxVal = Math.max(Math.max.apply(Math, closes), expectedRange[1]) * 1.005
 
-  # --- Прогнозные линии и заливка ---
   forecastMin = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[0]))
   forecastMax = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[1]))
   forecastAvg = Array(closes.length).fill(null).concat(Array(5).fill((expectedRange[0] + expectedRange[1]) / 2.0))
 
-  forecastFill = forecastAvg.map (val, idx) ->
-    if idx >= closes.length then val else null
-
-  # Плагин вертикальной линии (оставляем без изменений)
   Chart.register
     id: 'verticalLinePlugin'
     afterDraw: (chart) ->
@@ -78,16 +74,19 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
+          hidden: false
         }
         {
           label: "Прогноз — нижняя граница"
           data: forecastMin
           borderColor: 'rgba(0, 0, 255, 0.6)'
           borderDash: [4, 4]
-          fill: false
+          fill: '+1'               # заливка до следующей линии (верхняя граница)
+          backgroundColor: 'rgba(0, 0, 255, 0.08)' # заливка области
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
+          hidden: false
         }
         {
           label: "Прогноз — верхняя граница"
@@ -98,6 +97,7 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
+          hidden: false
         }
         {
           label: "Средняя цель"
@@ -108,15 +108,7 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
-        }
-        {
-          label: "Область прогноза"
-          data: forecastFill
-          backgroundColor: 'rgba(0, 0, 255, 0.08)'
-          fill: true
-          borderWidth: 0
-          pointRadius: 0
-          yAxisID: 'y'
+          hidden: false
         }
         {
           label: "MACD Line"
@@ -126,6 +118,7 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'macd'
           pointRadius: 0
+          hidden: false
         }
         {
           label: "Signal Line"
@@ -135,6 +128,7 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'macd'
           pointRadius: 0
+          hidden: false
         }
         {
           label: "RSI"
@@ -144,6 +138,7 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'rsi'
           pointRadius: 0
+          hidden: false
         }
         {
           label: "Stochastic RSI"
@@ -153,6 +148,7 @@ document.addEventListener 'DOMContentLoaded', ->
           tension: 0.3
           yAxisID: 'rsi'
           pointRadius: 0
+          hidden: false
         }
       ]
     options:
@@ -190,3 +186,5 @@ document.addEventListener 'DOMContentLoaded', ->
           max: 100
           grid:
             drawOnChartArea: false
+
+$(document).on 'turbolinks:load turbo:load', ready

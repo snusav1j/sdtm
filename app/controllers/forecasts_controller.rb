@@ -64,7 +64,37 @@ class ForecastsController < ApplicationController
 
     render json: coins.map { |c| { symbol: c['symbol'], name: c['baseAsset'] } }
   end
-
+  
+  def update
+    @forecast = Forecast.find(params[:id])
+  
+    service = CryptoTaService.new(@forecast.symbol, @forecast.timeframe)
+    result = service.analyze
+  
+    if result[:closes].blank? || result[:closes].size < 10
+      flash[:alert] = "Не удалось обновить данные по монете #{@forecast.symbol}. Попробуйте позже."
+      redirect_to forecast_path(@forecast) and return
+    end
+  
+    # Обновляем атрибуты прогноза (с сериализацией как в create)
+    @forecast.update(
+      closes: result[:closes],
+      signals: result[:signals],
+      direction: result[:direction].to_s,
+      probability: result[:probability].to_f,
+      secondary_probability: result[:secondary_probability].to_f,
+      expected_range: result[:expected_range].is_a?(Array) ? result[:expected_range] : [0, 0],
+      target_price: result[:target_price].to_f,
+      sma: result[:sma],
+      ema: result[:ema],
+      rsi: result[:rsi],
+      macd: result[:macd],
+      stochastic_rsi: result[:stochastic_rsi]
+    )
+  
+    flash[:notice] = "Прогноз обновлён"
+    redirect_to forecast_path(@forecast)
+  end
   private
 
   def parse_json_safe(raw, fallback)

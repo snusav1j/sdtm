@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   
   ###
 
-  resources :forecasts, only: [:index, :create, :show] do
+  resources :forecasts, only: [:index, :create, :show, :update] do
     collection do
       get :coins_search
     end
