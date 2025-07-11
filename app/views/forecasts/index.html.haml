@@ -11,26 +11,43 @@
 
   = f.button :submit, "Прогнозировать", class: "btn btn-primary"
 
+
+%div
+  %strong История прогнозов
 .table-block.users-table.with-hidden-scrollbar
   %table.big-table
     %thead
       %tr
         %th.text-muted #
         %th Символ
+        %th Таймфрейм
+        %th Направление
+        %th Вероятность (%)
         %th Ожидаемый минимум
         %th Ожидаемый максимум
+        %th Средняя цель
+        %th Сигналы
         %th
-        %th
-        - if current_user&.dev?
-          %th
     %tbody
       - @forecasts.each do |forecast|
+        - min_price = forecast.expected_range&.first || 0
+        - max_price = forecast.expected_range&.last || 0
+        - avg_target = (min_price.to_f + max_price.to_f) / 2
         %tr
           %td.text-muted= forecast.id
           %td= forecast.symbol
-          %td= forecast.expected_range&.first
-          %td= forecast.expected_range&.last
+          %td= forecast.timeframe
+          %td= forecast.direction
+          %td= forecast.probability
+          %td= min_price
+          %td= max_price
+          %td= avg_target.round(4)
           %td
+            - if forecast.signals.present?
+              - forecast.signals.each do |signal|
+                %div= signal
+            - else
+              Нет
           %td
             = link_to forecast_path(forecast), data: { turbo_frame: "_top" } do
               .btn.mini-btn.gradient-hover= g_icon 'visibility'

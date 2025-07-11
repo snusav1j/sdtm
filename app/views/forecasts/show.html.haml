@@ -9,9 +9,9 @@
 %br
 
 %h4 Сигналы
-%ul
-  - @forecast.signals.each do |signal|
-    %li= signal
+
+- @forecast.signals.each do |signal|
+  %div= signal
 
 %canvas#priceChart{
   width: 800,
