@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_28_102916) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_193918) do
   create_table "dice_game_settings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.float "auto_play_bet_amount"
@@ -31,6 +31,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_102916) do
     t.datetime "updated_at", null: false
     t.float "auto_play_bet_amount"
     t.index ["user_id"], name: "index_dice_games_on_user_id"
+  end
+
+  create_table "forecasts", force: :cascade do |t|
+    t.string "symbol"
+    t.string "timeframe"
+    t.text "signals"
+    t.text "closes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "direction"
+    t.float "probability"
+    t.json "expected_range", default: []
+    t.json "highs", default: []
+    t.json "lows", default: []
+    t.json "volumes", default: []
+    t.text "sma"
+    t.text "ema"
+    t.text "rsi"
+    t.text "stochastic_rsi"
+    t.text "macd"
   end
 
   create_table "messages", force: :cascade do |t|

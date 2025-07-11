@@ -1,30 +1,30 @@
-!!! 5
 %html
   %head
     %title Vexodus
     %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no", name: "viewport" }
     %meta{ charset: "utf-8" }
-    
     %meta{ content: "yes", name: "mobile-web-app-capable" }
-    
     %meta{ content: "yes", name: "apple-mobile-web-app-capable" }
     %meta{ content: "black-translucent", name: "apple-mobile-web-app-status-bar-style" }
     %meta{ content: "Vexodus", name: "apple-mobile-web-app-title" }
     %meta{ name: "apple-mobile-web-app-status-bar-style", content: "black" }
-    
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-    
     %link{ href: "/manifest.json", rel: "manifest" }
-    
     %link{ href: "/icons/vexodus_mini.png", rel: "icon", type: "image/png" }
-    
     %link{ rel: "apple-touch-icon", sizes: "180x180", href: "/icons/vexodus_mini.png" }
     %link{ rel: "apple-touch-icon", sizes: "152x152", href: "/icons/vexodus_mini.png" }
     %link{ rel: "apple-touch-icon", sizes: "120x120", href: "/icons/vexodus_mini.png" }
-    
     %link{ href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined", rel: "stylesheet" }
+    = stylesheet_link_tag 'application', media: 'all'
+    %link{ href: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css", rel: "stylesheet" }
+
+    / Убираем defer у jquery и select2
+    %script{ src: "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" }
+    %script{ src: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" }
+    %script{ src: "https://cdn.jsdelivr.net/npm/chart.js" }
+    %script{ src: "https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.0.0/dist/chartjs-chart-financial.min.js" }
 
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
 
@@ -42,13 +42,8 @@
           .content
             = yield
 
-    -# .app-footer
-    -#   .content
-    -#     = render partial: "layouts/footer"
-
-
 :javascript
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbo:load', function() {
     #{flash[:danger] ? "window.toastr.danger(#{flash[:danger].to_json});" : ''}
     #{flash[:success] ? "window.toastr.success(#{flash[:success].to_json});" : ''}
     #{flash[:warning] ? "window.toastr.warning(#{flash[:warning].to_json});" : ''}

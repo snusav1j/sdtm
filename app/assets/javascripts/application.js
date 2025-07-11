@@ -1,4 +1,4 @@
-//= require jquery
+
 //= require jquery_ujs
 //= require actioncable
 //= require turbolinks
@@ -13,8 +13,10 @@
 
 //= require home
 //= require users
+//= require forecasts
 //= require sweetalert
 //= require header
 //= require messages
 //= require dice_games
+
 

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  symbol: MyString
+  timeframe: MyString
+  signals: MyText
+  closes: MyText
+
+two:
+  symbol: MyString
+  timeframe: MyString
+  signals: MyText
+  closes: MyText

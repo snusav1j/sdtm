@@ -45,6 +45,9 @@ gem "solid_queue"
 gem "solid_cable"
 gem 'telegram-bot-ruby'
 gem 'russian'
+
+gem 'simple_form'
+
 # gem 'money'
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

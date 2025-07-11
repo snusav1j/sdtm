@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  # get "forecasts/index"
+  # get "forecasts/create"
   
   devise_for :users, skip: [:unlocks], path: '', path_names: {
     sign_in: 'sign_in',
@@ -19,8 +21,12 @@ Rails.application.routes.draw do
   root "home#index"
   
   ###
-  
-  
+
+  resources :forecasts, only: [:index, :create, :show] do
+    collection do
+      get :coins_search
+    end
+  end
   
   resources :home do
     collection do
