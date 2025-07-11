@@ -17,9 +17,17 @@ document.addEventListener 'DOMContentLoaded', ->
   rsi = parseJson(chartElement.dataset.rsi, [])
   stochasticRsi = parseJson(chartElement.dataset.stochasticrsi, [])
 
+  # ⚙️ Диагностика
+  console.log "✅ closes.length:", closes.length
+  console.log "✅ expectedRange:", expectedRange
+  console.log "✅ direction:", direction
+  console.log "✅ macd.macdLine.length:", macd.macdLine?.length
+  console.log "✅ macd.signalLine.length:", macd.signalLine?.length
+  console.log "✅ rsi.length:", rsi.length
+  console.log "✅ stochasticRsi.length:", stochasticRsi.length
+
   labels = closes.map (v, i) -> i
   forecastLabels = (closes.length + i for i in [1..5])
-
   allLabels = labels.concat(forecastLabels)
 
   ctx = chartElement.getContext('2d')
@@ -27,18 +35,15 @@ document.addEventListener 'DOMContentLoaded', ->
   minVal = Math.min.apply(Math, closes)
   maxVal = Math.max.apply(Math, closes)
 
-  # Генерируем прогнозные линии с заполнением для прогноза (min, max, средняя)
   forecastMin = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[0]))
   forecastMax = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[1]))
-  forecastAvg = Array(closes.length).fill(null).concat(
-    Array(5).fill((expectedRange[0] + expectedRange[1]) / 2.0)
-  )
+  forecastAvg = Array(closes.length).fill(null).concat(Array(5).fill((expectedRange[0] + expectedRange[1]) / 2.0))
 
-  # Генерируем фон прогноза (fill между min и max)
-  forecastFillData = forecastAvg.map (val, idx) ->
+  # Заливка прогноза (только область прогноза, без линий)
+  forecastFill = forecastAvg.map (val, idx) ->
     if idx >= closes.length then val else null
 
-  # Регистрируем плагин для вертикальной линии
+  # Плагин вертикальной линии
   Chart.register
     id: 'verticalLinePlugin'
     afterDraw: (chart) ->
@@ -64,83 +69,84 @@ document.addEventListener 'DOMContentLoaded', ->
     data:
       labels: allLabels
       datasets: [
-        # Основная цена
         {
           label: "Цена"
-          data: closes.concat(Array(5).fill(null))
+          data: closes.concat(Array(5).fill null)
           borderColor: if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)'
           fill: false
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
         }
-        # Прогноз - средняя линия
-        {
-          label: "Средняя цель"
-          data: Array(closes.length).fill(null).concat(forecastAvg.slice(closes.length))
-          borderColor: 'rgba(0, 0, 255, 1)'
-          borderDash: [5, 5]
-          fill: false
-          tension: 0.3
-          yAxisID: 'y'
-          pointRadius: 0
-        }
-        # Прогноз - нижняя граница
         {
           label: "Прогноз — нижняя граница"
           data: forecastMin
           borderColor: 'rgba(0, 0, 255, 0.6)'
-          borderDash: [5, 5]
+          borderDash: [4, 4]
           fill: false
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
         }
-        # Прогноз - верхняя граница, заполнение от нижней границы
         {
           label: "Прогноз — верхняя граница"
           data: forecastMax
           borderColor: 'rgba(0, 0, 255, 0.6)'
-          borderDash: [5, 5]
-          fill: '-1'  # заполняем область между этим и предыдущим dataset (нижняя граница)
+          borderDash: [4, 4]
+          fill: false
           tension: 0.3
           yAxisID: 'y'
           pointRadius: 0
         }
-        # MACD Line
+        {
+          label: "Средняя цель"
+          data: forecastAvg
+          borderColor: 'rgba(0, 0, 255, 1)'
+          borderDash: [2, 2]
+          fill: false
+          tension: 0.3
+          yAxisID: 'y'
+          pointRadius: 0
+        }
+        {
+          label: "Область прогноза"
+          data: forecastFill
+          backgroundColor: 'rgba(0, 0, 255, 0.08)'
+          fill: true
+          borderWidth: 0
+          pointRadius: 0
+          yAxisID: 'y'
+        }
         {
           label: "MACD Line"
-          data: (macd.macdLine || []).concat(Array(5).fill(null))
+          data: (macd.macdLine || []).concat(Array(5).fill null)
           borderColor: 'rgba(255, 99, 132, 1)'
           fill: false
           tension: 0.3
           yAxisID: 'macd'
           pointRadius: 0
         }
-        # Signal Line
         {
           label: "Signal Line"
-          data: (macd.signalLine || []).concat(Array(5).fill(null))
+          data: (macd.signalLine || []).concat(Array(5).fill null)
           borderColor: 'rgba(255, 159, 64, 1)'
           fill: false
           tension: 0.3
           yAxisID: 'macd'
           pointRadius: 0
         }
-        # RSI
         {
           label: "RSI"
-          data: rsi.concat(Array(5).fill(null))
+          data: rsi.concat(Array(5).fill null)
           borderColor: 'rgba(54, 162, 235, 1)'
           fill: false
           tension: 0.3
           yAxisID: 'rsi'
           pointRadius: 0
         }
-        # Stochastic RSI
         {
           label: "Stochastic RSI"
-          data: stochasticRsi.concat(Array(5).fill(null))
+          data: stochasticRsi.concat(Array(5).fill null)
           borderColor: 'rgba(153, 102, 255, 1)'
           fill: false
           tension: 0.3
@@ -161,7 +167,6 @@ document.addEventListener 'DOMContentLoaded', ->
           title:
             display: true
             text: 'Цена'
-          beginAtZero: false
           min: minVal * 0.995
           max: maxVal * 1.005
         macd:

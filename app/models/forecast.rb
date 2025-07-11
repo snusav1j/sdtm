@@ -4,27 +4,52 @@ class Forecast < ApplicationRecord
   # --- signals ---
   def signals
     val = read_attribute(:signals)
-    return [] if val.nil? || val.empty?
-
+    return [] if val.blank?
+  
     return val if val.is_a?(Array)
-
-    parsed = JSON.parse(val) rescue nil
-    parsed.is_a?(Array) ? parsed : []
+  
+    begin
+      parsed = JSON.parse(val)
+      parsed.is_a?(Array) ? parsed : []
+    rescue JSON::ParserError
+      []
+    end
   end
-
+  
   def signals=(value)
-    write_attribute(:signals, value.to_json)
+    json_value = if value.is_a?(String)
+                   begin
+                     JSON.parse(value)
+                     value
+                   rescue JSON::ParserError
+                     [].to_json
+                   end
+                 elsif value.nil?
+                   [].to_json
+                 else
+                   value.to_json
+                 end
+  
+    write_attribute(:signals, json_value)
   end
 
   # --- closes ---
   def closes
     val = read_attribute(:closes)
-    return [] if val.nil? || val.empty?
-
-    return val if val.is_a?(Array)
-
-    parsed = JSON.parse(val) rescue []
-    parsed.is_a?(Array) ? parsed : []
+    return [] if val.blank?
+  
+    if val.is_a?(Array)
+      return val
+    end
+  
+    begin
+      parsed = JSON.parse(val)
+      return parsed if parsed.is_a?(Array)
+    rescue JSON::ParserError
+      Rails.logger.warn("JSON parse error in closes: #{val.inspect}")
+    end
+  
+    []
   end
 
   def closes=(value)
@@ -34,7 +59,7 @@ class Forecast < ApplicationRecord
   # --- expected_range ---
   def expected_range
     val = read_attribute(:expected_range)
-    return [0, 0] if val.nil? || val.empty?
+    return [0, 0] if val.blank?
 
     return val if val.is_a?(Array)
 
@@ -187,13 +212,5 @@ class Forecast < ApplicationRecord
 
   def target_price=(value)
     write_attribute(:target_price, value.to_f)
-  end
-
-  def secondary_probability
-    read_attribute(:secondary_probability) || 0.0
-  end
-
-  def target_price
-    read_attribute(:target_price)
   end
 end

@@ -12,11 +12,15 @@
 %br/
 
 %h4 Сигналы
-- if @forecast.signals.present?
-  - @forecast.signals.each do |signal|
-    %div= signal
-- else
-  .text-muted Нет
+- begin
+  - parsed_signals = JSON.parse(@forecast.signals || '[]') rescue []
+  - if parsed_signals.present?
+    - parsed_signals.each do |signal|
+      %div= signal
+  - else
+    .text-muted Нет
+- rescue
+  .text-danger Ошибка при обработке сигналов
 
 %canvas#priceChart{
   width: 800,
