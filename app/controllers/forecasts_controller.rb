@@ -22,7 +22,11 @@ class ForecastsController < ApplicationController
     @forecast = Forecast.create!(
       symbol: symbol,
       timeframe: timeframe,
-      closes: result[:closes],            # передаем массив
+      closes: result[:closes],
+      opens: result[:opens] || result[:closes],   # если opens нет, возьмем closes
+      highs: result[:highs] || [],
+      lows: result[:lows] || [],
+      volumes: result[:volumes] || [],            # добавлено поле volumes, если есть в модели
       signals: result[:signals],
       direction: result[:direction].to_s,
       probability: result[:probability].to_f,
@@ -41,13 +45,32 @@ class ForecastsController < ApplicationController
 
   def show
     @forecast = Forecast.find(params[:id])
-
-    # Уже десериализованные значения, сразу используем
-    @closes_json = @forecast.closes || []
-    @expected_range_json = @forecast.expected_range || [0, 0]
-    @macd_json = @forecast.macd || { 'macdLine' => [], 'signalLine' => [] }
-    @rsi_json = @forecast.rsi || []
-    @stochastic_rsi_json = @forecast.stochastic_rsi || []
+  
+    @closes_json = parse_json_safe(@forecast.closes, [])
+    @opens_json = parse_json_safe(@forecast.opens, @closes_json)
+    @highs_json = parse_json_safe(@forecast.highs, [])
+    @lows_json = parse_json_safe(@forecast.lows, [])
+    @volumes_json = parse_json_safe(@forecast.volumes, [])
+    @expected_range_json = parse_json_safe(@forecast.expected_range, [0, 0])
+    @macd_json = parse_json_safe(@forecast.macd, { 'macdLine' => [], 'signalLine' => [] })
+    @rsi_json = parse_json_safe(@forecast.rsi, [])
+    @stochastic_rsi_json = parse_json_safe(@forecast.stochastic_rsi, [])
+  
+    # Локальные переменные для удобства
+    opens = @opens_json
+    highs = @highs_json
+    lows = @lows_json
+    closes = @closes_json
+  
+    @candles_json = opens.each_with_index.map do |open_price, i|
+      {
+        x: i,
+        o: open_price,
+        h: highs[i],
+        l: lows[i],
+        c: closes[i]
+      }
+    end
   end
 
   def coins_search
@@ -64,21 +87,24 @@ class ForecastsController < ApplicationController
 
     render json: coins.map { |c| { symbol: c['symbol'], name: c['baseAsset'] } }
   end
-  
+
   def update
     @forecast = Forecast.find(params[:id])
-  
+
     service = CryptoTaService.new(@forecast.symbol, @forecast.timeframe)
     result = service.analyze
-  
+
     if result[:closes].blank? || result[:closes].size < 10
       flash[:alert] = "Не удалось обновить данные по монете #{@forecast.symbol}. Попробуйте позже."
       redirect_to forecast_path(@forecast) and return
     end
-  
-    # Обновляем атрибуты прогноза (с сериализацией как в create)
+
     @forecast.update(
       closes: result[:closes],
+      opens: result[:opens] || result[:closes],
+      highs: result[:highs] || [],
+      lows: result[:lows] || [],
+      volumes: result[:volumes] || [],
       signals: result[:signals],
       direction: result[:direction].to_s,
       probability: result[:probability].to_f,
@@ -91,33 +117,25 @@ class ForecastsController < ApplicationController
       macd: result[:macd],
       stochastic_rsi: result[:stochastic_rsi]
     )
-  
+
     flash[:notice] = "Прогноз обновлён"
     redirect_to forecast_path(@forecast)
   end
+
   private
 
   def parse_json_safe(raw, fallback)
     return fallback if raw.blank?
 
-    JSON.parse(raw)
+    if raw.is_a?(String)
+      JSON.parse(raw)
+    elsif raw.is_a?(Array) || raw.is_a?(Hash)
+      raw
+    else
+      fallback
+    end
   rescue JSON::ParserError, TypeError => e
     Rails.logger.warn "JSON parse error: #{e.message}, raw: #{raw.inspect}"
     fallback
-  end
-
-  def safe_to_json(value, default: [])
-    obj = if value.nil?
-      default
-    elsif value.is_a?(String)
-      begin
-        JSON.parse(value)
-      rescue JSON::ParserError
-        default
-      end
-    else
-      value
-    end
-    obj.to_json
   end
 end

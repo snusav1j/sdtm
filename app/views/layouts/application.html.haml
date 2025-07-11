@@ -1,31 +1,37 @@
+!!!
 %html
   %head
     %title Vexodus
-    %meta{ content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no", name: "viewport" }
     %meta{ charset: "utf-8" }
-    %meta{ content: "yes", name: "mobile-web-app-capable" }
-    %meta{ content: "yes", name: "apple-mobile-web-app-capable" }
-    %meta{ content: "black-translucent", name: "apple-mobile-web-app-status-bar-style" }
-    %meta{ content: "Vexodus", name: "apple-mobile-web-app-title" }
-    %meta{ name: "apple-mobile-web-app-status-bar-style", content: "black" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" }
+    %meta{ name: "mobile-web-app-capable", content: "yes" }
+    %meta{ name: "apple-mobile-web-app-capable", content: "yes" }
+    %meta{ name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" }
+    %meta{ name: "apple-mobile-web-app-title", content: "Vexodus" }
     = csrf_meta_tags
     = csp_meta_tag
+
     = stylesheet_link_tag 'application', media: 'all'
-    %link{ href: "/manifest.json", rel: "manifest" }
-    %link{ href: "/icons/vexodus_mini.png", rel: "icon", type: "image/png" }
+    %link{ rel: "manifest", href: "/manifest.json" }
+    %link{ rel: "icon", href: "/icons/vexodus_mini.png", type: "image/png" }
     %link{ rel: "apple-touch-icon", sizes: "180x180", href: "/icons/vexodus_mini.png" }
     %link{ rel: "apple-touch-icon", sizes: "152x152", href: "/icons/vexodus_mini.png" }
     %link{ rel: "apple-touch-icon", sizes: "120x120", href: "/icons/vexodus_mini.png" }
     %link{ href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined", rel: "stylesheet" }
-    = stylesheet_link_tag 'application', media: 'all'
     %link{ href: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css", rel: "stylesheet" }
 
-    / Убираем defer у jquery и select2
+    / Подключаем jquery и select2 без defer, чтобы сразу доступны были
     %script{ src: "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" }
     %script{ src: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" }
-    %script{ src: "https://cdn.jsdelivr.net/npm/chart.js" }
-    %script{ src: "https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.0.0/dist/chartjs-chart-financial.min.js" }
 
+    / Подключаем Chart.js, date-fns-адаптер и financial plugin
+    %script{ src: "https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js" }
+    / Адаптер для работы с временными шкалами (внутри содержит date-fns)
+    %script{ src: "https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" }
+    / Финансовые графики (свечи, бары)
+    %script{ src: "https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.1/dist/chartjs-chart-financial.min.js" }
+
+    / Подключаем основной application.js через asset pipeline с defer
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
 
   %body
@@ -42,10 +48,10 @@
           .content
             = yield
 
-:javascript
-  document.addEventListener('turbo:load', function() {
-    #{flash[:danger] ? "window.toastr.danger(#{flash[:danger].to_json});" : ''}
-    #{flash[:success] ? "window.toastr.success(#{flash[:success].to_json});" : ''}
-    #{flash[:warning] ? "window.toastr.warning(#{flash[:warning].to_json});" : ''}
-    #{flash[:primary] ? "window.toastr.primary(#{flash[:primary].to_json});" : ''}
-  });
+    :javascript
+      document.addEventListener('turbo:load', function() {
+        #{flash[:danger] ? "window.toastr.danger(#{flash[:danger].to_json});" : ''}
+        #{flash[:success] ? "window.toastr.success(#{flash[:success].to_json});" : ''}
+        #{flash[:warning] ? "window.toastr.warning(#{flash[:warning].to_json});" : ''}
+        #{flash[:primary] ? "window.toastr.primary(#{flash[:primary].to_json});" : ''}
+      });

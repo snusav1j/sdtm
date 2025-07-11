@@ -4,15 +4,23 @@ class CryptoTaService
     @timeframe = timeframe
   end
 
+  # Возвращаем хеш с массивами для opens, highs, lows, closes, volumes
   def fetch_data
     url = URI("https://api.binance.com/api/v3/klines?symbol=#{@symbol}&interval=#{@timeframe}&limit=100")
     response = Net::HTTP.get(url)
-    JSON.parse(response).map { |entry| entry[4].to_f }
+    data = JSON.parse(response)
+
+    {
+      opens: data.map { |entry| entry[1].to_f },
+      highs: data.map { |entry| entry[2].to_f },
+      lows: data.map { |entry| entry[3].to_f },
+      closes: data.map { |entry| entry[4].to_f },
+      volumes: data.map { |entry| entry[5].to_f }
+    }
   rescue StandardError => e
     Rails.logger.warn "Failed to fetch data: #{e.message}"
-    []
+    { opens: [], highs: [], lows: [], closes: [], volumes: [] }
   end
-  
 
   def volatility(data, period = 14)
     return 0 if data.size < period
@@ -37,7 +45,7 @@ class CryptoTaService
     k = 2.0 / (period + 1)
     ema_values = []
     sma_first = data[0, period].sum / period.to_f
-    ema_values[period - 1] = sma_first
+    ema_values[period - 1] = sma_first.round(4)
     (period...data.size).each do |i|
       ema_values[i] = (data[i] * k + ema_values[i - 1] * (1 - k)).round(4)
     end
@@ -88,8 +96,8 @@ class CryptoTaService
     end
 
     valid_macd = macd_line.compact
-    signal_line = ema(valid_macd, signal_period)
-    signal_line = Array.new(macd_line.size - signal_line.size, nil) + signal_line
+    signal_line_vals = ema(valid_macd, signal_period)
+    signal_line = Array.new(macd_line.size - signal_line_vals.size, nil) + signal_line_vals
 
     { macdLine: macd_line, signalLine: signal_line }
   end
@@ -111,7 +119,8 @@ class CryptoTaService
   end
 
   def analyze
-    closes = fetch_data
+    data = fetch_data
+    closes = data[:closes]
     return {} if closes.blank?
 
     signals = []
@@ -165,6 +174,10 @@ class CryptoTaService
     target_price = ((expected_range[0] + expected_range[1]) / 2.0).round(4)
 
     {
+      opens: data[:opens],
+      highs: data[:highs],
+      lows: data[:lows],
+      volumes: data[:volumes],
       closes: closes,
       signals: signals,
       direction: direction,

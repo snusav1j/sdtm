@@ -2,6 +2,7 @@
   %span.text-muted.text-xxl= fa_icon "arrow-left"
 
 = button_to "Обновить прогноз", forecast_path(@forecast), method: :patch, class: "btn btn-warning", form: { data: { turbo: false } }
+
 %h2 Прогноз по #{@forecast.symbol} (#{@forecast.timeframe})
 %h4 Прогноз направления: #{@forecast.direction}
 %h4 Вероятность изменения: #{@forecast.probability}%
@@ -26,12 +27,16 @@
   width: 800,
   height: 400,
   data: {
-    closes: raw(@closes_json.to_json.html_safe),
-    expectedRange: raw(@expected_range_json.to_json.html_safe),
+    opens: @opens_json.to_json,
+    highs: @highs_json.to_json,
+    lows: @lows_json.to_json,
+    closes: @closes_json.to_json,
+    candles: @candles_json.to_json,
+    expectedRange: @expected_range_json.to_json,
     direction: @forecast.direction,
     label: @forecast.symbol,
-    macd: raw(@macd_json.to_json.html_safe),
-    rsi: raw(@rsi_json.to_json.html_safe),
-    stochasticrsi: raw(@stochastic_rsi_json.to_json.html_safe)
+    macd: @macd_json.to_json,
+    rsi: @rsi_json.to_json,
+    stochasticrsi: @stochastic_rsi_json.to_json
   }
 }

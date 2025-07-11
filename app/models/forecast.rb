@@ -5,9 +5,9 @@ class Forecast < ApplicationRecord
   def signals
     val = read_attribute(:signals)
     return [] if val.blank?
-  
+
     return val if val.is_a?(Array)
-  
+
     begin
       parsed = JSON.parse(val)
       parsed.is_a?(Array) ? parsed : []
@@ -15,7 +15,7 @@ class Forecast < ApplicationRecord
       []
     end
   end
-  
+
   def signals=(value)
     json_value = if value.is_a?(String)
                    begin
@@ -29,7 +29,7 @@ class Forecast < ApplicationRecord
                  else
                    value.to_json
                  end
-  
+
     write_attribute(:signals, json_value)
   end
 
@@ -37,23 +37,105 @@ class Forecast < ApplicationRecord
   def closes
     val = read_attribute(:closes)
     return [] if val.blank?
-  
-    if val.is_a?(Array)
-      return val
-    end
-  
+
+    return val if val.is_a?(Array)
+
     begin
       parsed = JSON.parse(val)
       return parsed if parsed.is_a?(Array)
     rescue JSON::ParserError
       Rails.logger.warn("JSON parse error in closes: #{val.inspect}")
     end
-  
+
     []
   end
 
   def closes=(value)
     write_attribute(:closes, value.to_json)
+  end
+
+  # --- opens ---
+  def opens
+    val = read_attribute(:opens)
+    return [] if val.blank?
+
+    return val if val.is_a?(Array)
+
+    begin
+      parsed = JSON.parse(val)
+      return parsed if parsed.is_a?(Array)
+    rescue JSON::ParserError
+      Rails.logger.warn("JSON parse error in opens: #{val.inspect}")
+    end
+
+    []
+  end
+
+  def opens=(value)
+    write_attribute(:opens, value.to_json)
+  end
+
+  # --- highs ---
+  def highs
+    val = read_attribute(:highs)
+    return [] if val.blank?
+
+    return val if val.is_a?(Array)
+
+    begin
+      parsed = JSON.parse(val)
+      return parsed if parsed.is_a?(Array)
+    rescue JSON::ParserError
+      Rails.logger.warn("JSON parse error in highs: #{val.inspect}")
+    end
+
+    []
+  end
+
+  def highs=(value)
+    write_attribute(:highs, value.to_json)
+  end
+
+  # --- lows ---
+  def lows
+    val = read_attribute(:lows)
+    return [] if val.blank?
+
+    return val if val.is_a?(Array)
+
+    begin
+      parsed = JSON.parse(val)
+      return parsed if parsed.is_a?(Array)
+    rescue JSON::ParserError
+      Rails.logger.warn("JSON parse error in lows: #{val.inspect}")
+    end
+
+    []
+  end
+
+  def lows=(value)
+    write_attribute(:lows, value.to_json)
+  end
+
+  # --- volumes ---
+  def volumes
+    val = read_attribute(:volumes)
+    return [] if val.blank?
+
+    return val if val.is_a?(Array)
+
+    begin
+      parsed = JSON.parse(val)
+      return parsed if parsed.is_a?(Array)
+    rescue JSON::ParserError
+      Rails.logger.warn("JSON parse error in volumes: #{val.inspect}")
+    end
+
+    []
+  end
+
+  def volumes=(value)
+    write_attribute(:volumes, value.to_json)
   end
 
   # --- expected_range ---
@@ -82,7 +164,7 @@ class Forecast < ApplicationRecord
   def ema(period = 14)
     data = closes
     return [] unless data.is_a?(Array) && data.size >= period
-  
+
     k = 2.0 / (period + 1)
     ema_values = []
     data.each_with_index do |close, i|

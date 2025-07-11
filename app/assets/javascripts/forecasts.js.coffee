@@ -1,4 +1,5 @@
 ready = ->
+
   chartElement = document.getElementById('priceChart')
   return unless chartElement
 
@@ -15,6 +16,7 @@ ready = ->
   macd = parseJson(chartElement.dataset.macd, { macdLine: [], signalLine: [] })
   rsi = parseJson(chartElement.dataset.rsi, [])
   stochasticRsi = parseJson(chartElement.dataset.stochasticrsi, [])
+  candleData = parseJson(chartElement.dataset.candles, []) # массив объектов {o,h,l,c}
 
   labels = closes.map (v, i) -> i
   forecastLabels = (closes.length + i for i in [1..5])
@@ -31,14 +33,23 @@ ready = ->
 
   datasets = [
     {
-      label: "Цена"
+      label: "Цена (свечи)"
+      data: candleData
+      type: 'candlestick'
+      yAxisID: 'y'
+      borderColor: (if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)')
+      backgroundColor: 'rgba(0, 200, 0, 0.5)'
+      hidden: false
+    }
+    {
+      label: "Цена (линия)"
       data: closes.concat(Array(5).fill null)
-      borderColor: if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)'
+      borderColor: (if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)')
       fill: false
       tension: 0.3
       yAxisID: 'y'
       pointRadius: 0
-      hidden: false
+      hidden: true
     }
     {
       label: "Прогноз — нижняя граница"
@@ -54,9 +65,9 @@ ready = ->
     {
       label: "Область прогноза"
       data: forecastMax
-      borderColor: 'rgba(0, 0, 255, 0.08)' # линия невидимая
+      borderColor: 'rgba(0, 0, 255, 0.08)'
       backgroundColor: 'rgba(0, 0, 255, 0.08)'
-      fill: '-1' # заливка до нижней границы
+      fill: '-1'
       pointRadius: 0
       tension: 0.3
       yAxisID: 'y'
@@ -126,16 +137,35 @@ ready = ->
     }
   ]
 
-  rgbaToBackground = (rgba) ->
-    m = rgba.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d\.]+)\)/)
-    if m
-      "rgba(#{m[1]}, #{m[2]}, #{m[3]}, 0.15)"
-    else
-      rgba
-
   toggleContainer = document.createElement('div')
   toggleContainer.style.marginBottom = '10px'
   toggleContainer.classList.add('forecasts-chart-block')
+
+  chart = null
+
+  toggleDatasetVisibility = (idx, btn, icon) ->
+    ds = chart.data.datasets[idx]
+    ds.hidden = !ds.hidden
+    icon.textContent = if ds.hidden then 'visibility' else 'visibility_off'
+
+    # Особая логика для прогноза и области
+    areaIndex = chart.data.datasets.findIndex (d) -> d.label == "Область прогноза"
+    lowerIndex = chart.data.datasets.findIndex (d) -> d.label == "Прогноз — нижняя граница"
+    upperIndex = chart.data.datasets.findIndex (d) -> d.label == "Прогноз — верхняя граница"
+
+    if idx == lowerIndex
+      if ds.hidden
+        chart.data.datasets[areaIndex].hidden = false
+        toggleContainer.querySelectorAll('button').forEach (b) ->
+          if parseInt(b.dataset.index) == areaIndex
+            b.querySelector('span.material-symbols-outlined').textContent = 'visibility_off'
+    else if idx == upperIndex
+      chart.data.datasets[areaIndex].hidden = ds.hidden
+      toggleContainer.querySelectorAll('button').forEach (b) ->
+        if parseInt(b.dataset.index) == areaIndex
+          b.querySelector('span.material-symbols-outlined').textContent = if ds.hidden then 'visibility' else 'visibility_off'
+
+    chart.update({duration: 500, lazy: false})
 
   datasets.forEach (dataset, index) ->
     btn = document.createElement('button')
@@ -150,20 +180,17 @@ ready = ->
     btn.style.borderWidth = '2px'
     btn.style.borderStyle = 'solid'
     btn.style.display = 'flex'
-    # btn.style.alignItems = 'center'
     btn.style.justifyContent = 'space-between'
     btn.style.gap = '6px'
 
     color = dataset.backgroundColor ? dataset.borderColor
     btn.style.borderColor = color
 
-    # Текст
     label = document.createElement('span')
     label.textContent = dataset.label
     label.style.color = 'var(--main-text-color, #1b1b1b)'
     label.style.fontSize = '14px'
 
-    # Иконка
     icon = document.createElement('span')
     icon.classList.add('material-symbols-outlined', 'g-icon')
     icon.style.color = 'var(--main-text-color, #1b1b1b)'
@@ -172,35 +199,15 @@ ready = ->
     btn.appendChild(label)
     btn.appendChild(icon)
 
-    btn.onclick = (e) ->
-      idx = parseInt(e.currentTarget.dataset.index)
-      ds = chart.data.datasets[idx]
-      ds.hidden = !ds.hidden
-
-      icon.textContent = if ds.hidden then 'visibility' else 'visibility_off'
-
-      areaIndex = chart.data.datasets.findIndex (d) -> d.label == "Область прогноза"
-      lowerIndex = chart.data.datasets.findIndex (d) -> d.label == "Прогноз — нижняя граница"
-      upperIndex = chart.data.datasets.findIndex (d) -> d.label == "Прогноз — верхняя граница"
-
-      if idx == lowerIndex
-        if ds.hidden
-          chart.data.datasets[areaIndex].hidden = false
-          toggleContainer.querySelectorAll('button').forEach (b) ->
-            if parseInt(b.dataset.index) == areaIndex
-              b.querySelector('span.material-symbols-outlined').textContent = 'visibility_off'
-      else if idx == upperIndex
-        chart.data.datasets[areaIndex].hidden = ds.hidden
-        toggleContainer.querySelectorAll('button').forEach (b) ->
-          if parseInt(b.dataset.index) == areaIndex
-            b.querySelector('span.material-symbols-outlined').textContent = if ds.hidden then 'visibility' else 'visibility_off'
-
-      chart.update({duration: 500, lazy: false})
+    btn.onclick = (e) -> toggleDatasetVisibility(index, btn, icon)
 
     toggleContainer.appendChild(btn)
 
-
   chartElement.parentNode.insertBefore(toggleContainer, chartElement)
+
+  console.log 'dataset.closes:', chartElement.dataset.closes
+  console.log 'dataset.expectedrange:', chartElement.dataset.expectedrange
+  console.log 'dataset.candles:', chartElement.dataset.candles
 
   chart = new Chart ctx,
     type: 'line'
@@ -247,5 +254,6 @@ ready = ->
           max: 100
           grid:
             drawOnChartArea: false
+
 
 $(document).on 'turbolinks:load turbo:load', ready

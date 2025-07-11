@@ -1,5 +1,3 @@
-
-
 //= require actioncable
 //= require turbolinks
 
@@ -17,6 +15,5 @@
 //= require sweetalert
 //= require header
 //= require messages
+
 //= require dice_games
-
-
