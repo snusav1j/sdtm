@@ -21,12 +21,12 @@
                 = g_icon(:casino)
                 %strong= "Кости"
 
-        - if current_user && current_user.dev?
-          .nav
-            = link_to forecasts_path do
-              .nav-item{ class: active_sidebar?(forecasts_path) ? 'active' : 'inactive' }
-                = g_icon("currency_bitcoin")
-                %strong= "Прогноз"
+        
+        .nav
+          = link_to forecasts_path do
+            .nav-item{ class: active_sidebar?(forecasts_path) ? 'active' : 'inactive' }
+              = g_icon("currency_bitcoin")
+              %strong= "Прогноз"
 
   .side-bar-dop-menu
     .nav-items
