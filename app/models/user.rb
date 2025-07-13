@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :dice_game_settings
 
   def self.get_roles
-    []
+    [['Разработчик', 'dev'], ['Пользователь', 'user'], ['ТЕСТ', 'test']]
   end
 
   def auto_play_bet_amount

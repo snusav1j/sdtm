@@ -1,5 +1,5 @@
-.row
-  .col-md-6
+.flex-block
+  %div
     .table-block.users-table.with-hidden-scrollbar
       %table.big-table
         %thead
@@ -40,5 +40,7 @@
                 %td
                   = link_to edit_user_path(user) do
                     .btn.mini-btn.gradient-hover= g_icon 'edit'
-  .col-md-6
-    = render 'form'
+
+  - if current_user.dev?
+    %div{ style: "width: 100%;" }
+      = render 'form'
