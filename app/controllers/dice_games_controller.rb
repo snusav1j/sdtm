@@ -4,6 +4,7 @@ class DiceGamesController < ApplicationController
   def index
     @dice_game = DiceGame.new()
     @history = DiceGame.get_history(current_user)
+
   end
   
   def clear_game_history

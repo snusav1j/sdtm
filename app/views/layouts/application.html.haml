@@ -48,10 +48,6 @@
           .content
             = yield
 
-    :javascript
-      document.addEventListener('turbo:load', function() {
-        #{flash[:danger] ? "window.toastr.danger(#{flash[:danger].to_json});" : ''}
-        #{flash[:success] ? "window.toastr.success(#{flash[:success].to_json});" : ''}
-        #{flash[:warning] ? "window.toastr.warning(#{flash[:warning].to_json});" : ''}
-        #{flash[:primary] ? "window.toastr.primary(#{flash[:primary].to_json});" : ''}
-      });
+#flash-container
+  - flash.each do |type, message|
+    %div{ class: "flash #{type}" }= message

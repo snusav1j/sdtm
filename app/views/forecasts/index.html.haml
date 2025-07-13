@@ -6,7 +6,6 @@
           = f.label :symbol, "Монета"
           = f.input :symbol, collection: [], input_html: { id: "symbol-select", class: "form-control" }, include_blank: 'Выберите монету', label: false
 
-
       .form-group
         .field
           = f.label :timeframe, "Таймфрейм"
@@ -14,22 +13,23 @@
 
       = f.button :submit, "Прогнозировать", class: "btn btn-primary"
 
+  %hr
+
   %div{ style: "margin: 10px 0;" }
-    %strong Прогнозы
+    %strong Ваши прогнозы
+    %span.text-muted= "(#{@forecasts.length})"
   .table-block.users-table.with-hidden-scrollbar
     %table.big-table
       %thead
         %tr
           %th.text-muted #
           %th Символ
-          %th Таймфрейм
-          %th Направление
+
           %th Вероятность (%)
           %th Доп. вероятность коррекции (%)
           %th Ожидаемый минимум
           %th Ожидаемый максимум
           %th Средняя цель
-          %th Сигналы
           %th
       %tbody
         - @forecasts.each do |forecast|
@@ -38,23 +38,22 @@
           - avg_target = ((min_price.to_f + max_price.to_f) / 2.0).round(4)
           %tr
             %td.text-muted= forecast.id
-            %td= forecast.symbol
-            %td= forecast.timeframe
-            %td= forecast.direction
-            %td= forecast.probability
-            %td= forecast.secondary_probability || 0
+            %td
+              .flex-row
+                %span
+                  = "#{forecast.symbol}"
+                  %span.text-muted= "(#{forecast.timeframe})"
+
+                - if forecast.up?
+                  .text-success= g_icon('arrow_upward')
+                - elsif forecast.down?
+                  .text-danger= g_icon('arrow_downward')
+
+            %td= forecast.probability.round(2)
+            %td= (forecast.secondary_probability || 0).round(2)
             %td= min_price
             %td= max_price
             %td= avg_target
-            %td
-              - signals = forecast.signals
-              - signals = JSON.parse(signals) if signals.is_a?(String)
-
-              - if signals.present?
-                - signals.each do |signal|
-                  %div= signal
-              - else
-                Нет
 
             %td
               = link_to forecast_path(forecast), data: { turbo_frame: "_top" } do

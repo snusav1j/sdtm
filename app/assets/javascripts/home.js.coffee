@@ -1,15 +1,23 @@
 ready = ->
-  $('#symbol-select').select2
-    ajax:
-      url: '/forecasts/coins_search'
-      dataType: 'json'
-      delay: 250
-      data: (params) -> { q: params.term }
-      processResults: (data) ->
-        results = data.map (item) -> { id: item.symbol, text: "#{item.symbol} - #{item.name}" }
-        results: results
-    minimumInputLength: 2
-    language:
-      inputTooShort: (args) -> ""
+  console.log('Flash toastr ready fired')
+  flashContainer = document.getElementById('flash-container')
+  return unless flashContainer?
+
+  flashContainer.querySelectorAll('.flash').forEach (el) ->
+    if el.classList.contains('success')
+      type = 'success'
+    else if el.classList.contains('danger')
+      type = 'danger'
+    else if el.classList.contains('warning')
+      type = 'warning'
+    else
+      type = 'primary'
+
+    console.log("Calling toastr for type:", type, "message:", el.textContent.trim())
+
+    if window.toastr? and typeof window.toastr[type] is 'function'
+      window.toastr[type](el.textContent.trim())
+
+  flashContainer.innerHTML = ''
 
 $(document).on 'turbolinks:load turbo:load', ready

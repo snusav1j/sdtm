@@ -1,6 +1,7 @@
+//= require jquery_ujs
+
 //= require actioncable
 //= require turbolinks
-
 //= require cable
 //= require_tree ./channels
 
@@ -17,3 +18,5 @@
 //= require messages
 
 //= require dice_games
+
+

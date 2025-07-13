@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_11_070714) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_13_162541) do
   create_table "dice_game_settings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.float "auto_play_bet_amount"
@@ -54,6 +54,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_070714) do
     t.float "secondary_probability", default: 0.0, null: false
     t.float "target_price", default: 0.0, null: false
     t.text "opens"
+    t.json "bollinger_bands", default: {"upper"=>[], "middle"=>[], "lower"=>[]}
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_forecasts_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -83,4 +86,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_070714) do
 
   add_foreign_key "dice_game_settings", "users"
   add_foreign_key "dice_games", "users"
+  add_foreign_key "forecasts", "users"
 end

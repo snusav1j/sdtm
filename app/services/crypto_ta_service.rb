@@ -117,6 +117,30 @@ class CryptoTaService
     end
   end
 
+  def bollinger_bands(data, period = 20, stddev_factor = 2)
+    return { middle: [], upper: [], lower: [] } if data.size < period
+
+    middle_band = sma(data, period)
+    upper_band = []
+    lower_band = []
+
+    (period - 1).upto(data.size - 1) do |i|
+      window = data[(i - period + 1)..i]
+      mean = middle_band[i]
+      variance = window.map { |x| (x - mean)**2 }.sum / period.to_f
+      stddev = Math.sqrt(variance)
+      upper_band << (mean + stddev_factor * stddev).round(4)
+      lower_band << (mean - stddev_factor * stddev).round(4)
+    end
+
+    nils = Array.new(period - 1, nil)
+    {
+      middle: nils + middle_band.compact,
+      upper: nils + upper_band,
+      lower: nils + lower_band
+    }
+  end
+
   def analyze
     data = fetch_data
     closes = data[:closes]
@@ -129,12 +153,35 @@ class CryptoTaService
     rsi_values = rsi(closes)
     macd_values = macd(closes)
     stochastic_rsi_values = stochastic_rsi(closes)
+    bb = bollinger_bands(closes)
 
     last_rsi = rsi_values.compact.last || 50
     last_stoch = (stochastic_rsi_values.compact.last || 50) / 100.0
 
+    # Сигналы RSI
     signals << "Buy (RSI)" if last_rsi < 30
     signals << "Sell (RSI)" if last_rsi > 70
+
+    last_close = closes.last
+    last_upper = bb[:upper].compact.last
+    last_lower = bb[:lower].compact.last
+
+    # Сигналы Bollinger Bands
+    if last_close && last_lower && last_close < last_lower
+      signals << "Buy (Bollinger Bands - price below lower band)"
+    elsif last_close && last_upper && last_close > last_upper
+      signals << "Sell (Bollinger Bands - price above upper band)"
+    end
+
+    last_macd = macd_values[:macdLine].compact.last || 0
+    last_signal = macd_values[:signalLine].compact.last || 0
+
+    # Сигналы MACD
+    if last_macd > last_signal
+      signals << "MACD bullish crossover"
+    elsif last_macd < last_signal
+      signals << "MACD bearish crossover"
+    end
 
     direction = if sma_values.compact.size >= 2
                   sma_values.compact[-1] > sma_values.compact[-2] ? "Up" : "Down"
@@ -188,7 +235,8 @@ class CryptoTaService
       ema: ema_values,
       rsi: rsi_values,
       macd: macd_values,
-      stochastic_rsi: stochastic_rsi_values
+      stochastic_rsi: stochastic_rsi_values,
+      bollinger_bands: bb
     }
   end
 end

@@ -1,6 +1,16 @@
 class Forecast < ApplicationRecord
   validates :symbol, :timeframe, presence: true
 
+
+  def up?
+    self.direction == 'Up'
+  end
+
+  def down?
+    self.direction == 'Down'
+  end
+
+
   # --- signals ---
   def signals
     val = read_attribute(:signals)
@@ -151,6 +161,32 @@ class Forecast < ApplicationRecord
 
   def expected_range=(value)
     write_attribute(:expected_range, value.to_json)
+  end
+
+  # --- bollinger_bands ---
+  def bollinger_bands
+    val = read_attribute(:bollinger_bands)
+    return { 'upper' => [], 'middle' => [], 'lower' => [] } if val.blank?
+
+    return val if val.is_a?(Hash)
+
+    begin
+      parsed = JSON.parse(val)
+      if parsed.is_a?(Hash)
+        %w[upper middle lower].each do |key|
+          parsed[key] = [] unless parsed[key].is_a?(Array)
+        end
+        return parsed
+      end
+    rescue JSON::ParserError
+      Rails.logger.warn("JSON parse error in bollinger_bands: #{val.inspect}")
+    end
+
+    { 'upper' => [], 'middle' => [], 'lower' => [] }
+  end
+
+  def bollinger_bands=(value)
+    write_attribute(:bollinger_bands, value.to_json)
   end
 
   # --- sma ---

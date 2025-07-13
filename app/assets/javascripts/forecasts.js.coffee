@@ -1,5 +1,20 @@
 ready = ->
 
+  # select2
+  $('#symbol-select').select2
+    ajax:
+      url: '/forecasts/coins_search'
+      dataType: 'json'
+      delay: 250
+      data: (params) -> { q: params.term }
+      processResults: (data) ->
+        results = data.map (item) -> { id: item.symbol, text: "#{item.symbol} - #{item.name}" }
+        results: results
+    minimumInputLength: 2
+    language:
+      inputTooShort: (args) -> ""
+
+  # chart
   chartElement = document.getElementById('priceChart')
   return unless chartElement
 
@@ -7,16 +22,20 @@ ready = ->
     try
       JSON.parse(value)
     catch error
-      console.warn("Ошибка парсинга JSON:", error)
+      console.warn("Ошибка парсинга JSON:", value)
       fallback
 
   closes = parseJson(chartElement.dataset.closes, [])
+  volumes = parseJson(chartElement.dataset.volumes, [])
   expectedRange = parseJson(chartElement.dataset.expectedrange, [0, 0])
   direction = chartElement.dataset.direction || 'Up'
   macd = parseJson(chartElement.dataset.macd, { macdLine: [], signalLine: [] })
   rsi = parseJson(chartElement.dataset.rsi, [])
   stochasticRsi = parseJson(chartElement.dataset.stochasticrsi, [])
-  candleData = parseJson(chartElement.dataset.candles, []) # массив объектов {o,h,l,c}
+  bollingerBands = parseJson(chartElement.dataset.bollingerbands, { upper: [], middle: [], lower: [] })
+  sma = parseJson(chartElement.dataset.sma, [])
+  ema = parseJson(chartElement.dataset.ema, [])
+  candleData = parseJson(chartElement.dataset.candles, [])  # массив объектов {o,h,l,c}
 
   labels = closes.map (v, i) -> i
   forecastLabels = (closes.length + i for i in [1..5])
@@ -27,24 +46,20 @@ ready = ->
   minVal = Math.min(Math.min.apply(Math, closes), expectedRange[0]) * 0.995
   maxVal = Math.max(Math.max.apply(Math, closes), expectedRange[1]) * 1.005
 
-  forecastMin = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[0]))
-  forecastMax = Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[1]))
-  forecastAvg = Array(closes.length).fill(null).concat(Array(5).fill((expectedRange[0] + expectedRange[1]) / 2.0))
-
   datasets = [
     {
       label: "Цена (свечи)"
       data: candleData
       type: 'candlestick'
       yAxisID: 'y'
-      borderColor: (if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)')
+      borderColor: if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)'
       backgroundColor: 'rgba(0, 200, 0, 0.5)'
       hidden: false
     }
     {
       label: "Цена (линия)"
       data: closes.concat(Array(5).fill null)
-      borderColor: (if direction == 'Up' then 'rgb(0, 200, 0)' else 'rgb(200, 0, 0)')
+      borderColor: 'rgb(0, 150, 0)'
       fill: false
       tension: 0.3
       yAxisID: 'y'
@@ -52,8 +67,61 @@ ready = ->
       hidden: true
     }
     {
+      label: "SMA"
+      data: sma.concat(Array(5).fill null)
+      borderColor: 'rgba(255, 140, 0, 1)'
+      fill: false
+      tension: 0.3
+      yAxisID: 'y'
+      pointRadius: 0
+      hidden: true
+    }
+    {
+      label: "EMA"
+      data: ema.concat(Array(5).fill null)
+      borderColor: 'rgba(255, 215, 0, 1)'
+      fill: false
+      tension: 0.3
+      yAxisID: 'y'
+      pointRadius: 0
+      hidden: true
+    }
+    {
+      label: "Bollinger Upper"
+      data: bollingerBands.upper.concat(Array(5).fill null)
+      borderColor: 'rgba(0, 0, 200, 0.6)'
+      fill: false
+      tension: 0.3
+      yAxisID: 'y'
+      pointRadius: 0
+      hidden: false
+      tooltip: { enabled: false }
+    }
+    {
+      label: "Bollinger Middle"
+      data: bollingerBands.middle.concat(Array(5).fill null)
+      borderColor: 'rgba(0, 0, 150, 1)'
+      fill: false
+      tension: 0.3
+      yAxisID: 'y'
+      pointRadius: 0
+      hidden: false
+      tooltip: { enabled: false }
+    }
+    {
+      label: "Bollinger Lower"
+      data: bollingerBands.lower.concat(Array(5).fill null)
+      borderColor: 'rgba(0, 0, 200, 0.6)'
+      fill: false
+      tension: 0.3
+      yAxisID: 'y'
+      pointRadius: 0
+      hidden: false
+      tooltip: { enabled: false }
+    }
+    {
       label: "Прогноз — нижняя граница"
-      data: forecastMin
+      data: Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[0]))
       borderColor: 'rgba(0, 0, 255, 0.6)'
       borderDash: [4, 4]
       fill: false
@@ -64,7 +132,7 @@ ready = ->
     }
     {
       label: "Область прогноза"
-      data: forecastMax
+      data: Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[1]))
       borderColor: 'rgba(0, 0, 255, 0.08)'
       backgroundColor: 'rgba(0, 0, 255, 0.08)'
       fill: '-1'
@@ -75,7 +143,7 @@ ready = ->
     }
     {
       label: "Прогноз — верхняя граница"
-      data: forecastMax
+      data: Array(closes.length).fill(null).concat(Array(5).fill(expectedRange[1]))
       borderColor: 'rgba(0, 0, 255, 0.6)'
       borderDash: [4, 4]
       fill: false
@@ -86,13 +154,21 @@ ready = ->
     }
     {
       label: "Средняя цель"
-      data: forecastAvg
+      data: Array(closes.length).fill(null).concat(Array(5).fill((expectedRange[0] + expectedRange[1]) / 2.0))
       borderColor: 'rgba(0, 0, 255, 1)'
       borderDash: [2, 2]
       fill: false
       tension: 0.3
       yAxisID: 'y'
       pointRadius: 0
+      hidden: false
+    }
+    {
+      label: "Объёмы"
+      data: volumes.concat(Array(5).fill null)
+      type: 'bar'
+      yAxisID: 'volume'
+      backgroundColor: 'rgba(128, 128, 128, 0.4)'
       hidden: false
     }
     {
@@ -103,7 +179,7 @@ ready = ->
       tension: 0.3
       yAxisID: 'macd'
       pointRadius: 0
-      hidden: false
+      hidden: true
     }
     {
       label: "Signal Line"
@@ -113,7 +189,7 @@ ready = ->
       tension: 0.3
       yAxisID: 'macd'
       pointRadius: 0
-      hidden: false
+      hidden: true
     }
     {
       label: "RSI"
@@ -123,7 +199,7 @@ ready = ->
       tension: 0.3
       yAxisID: 'rsi'
       pointRadius: 0
-      hidden: false
+      hidden: true
     }
     {
       label: "Stochastic RSI"
@@ -143,12 +219,16 @@ ready = ->
 
   chart = null
 
-  toggleDatasetVisibility = (idx, btn, icon) ->
+  toggleDatasetVisibility = (idx, btn, icon, label) ->
     ds = chart.data.datasets[idx]
     ds.hidden = !ds.hidden
-    icon.textContent = if ds.hidden then 'visibility' else 'visibility_off'
+    if ds.hidden
+      icon.textContent = 'visibility'
+      label.textContent = 'Показать ' + ds.label
+    else
+      icon.textContent = 'visibility_off'
+      label.textContent = 'Скрыть ' + ds.label
 
-    # Особая логика для прогноза и области
     areaIndex = chart.data.datasets.findIndex (d) -> d.label == "Область прогноза"
     lowerIndex = chart.data.datasets.findIndex (d) -> d.label == "Прогноз — нижняя граница"
     upperIndex = chart.data.datasets.findIndex (d) -> d.label == "Прогноз — верхняя граница"
@@ -168,6 +248,7 @@ ready = ->
     chart.update({duration: 500, lazy: false})
 
   datasets.forEach (dataset, index) ->
+
     btn = document.createElement('button')
     btn.dataset.index = index
     btn.classList.add('gradient-hover')
@@ -187,27 +268,28 @@ ready = ->
     btn.style.borderColor = color
 
     label = document.createElement('span')
-    label.textContent = dataset.label
     label.style.color = 'var(--main-text-color, #1b1b1b)'
     label.style.fontSize = '14px'
 
     icon = document.createElement('span')
     icon.classList.add('material-symbols-outlined', 'g-icon')
     icon.style.color = 'var(--main-text-color, #1b1b1b)'
-    icon.textContent = 'visibility_off'
+
+    if dataset.hidden
+      icon.textContent = 'visibility'
+      label.textContent = 'Показать ' + dataset.label
+    else
+      icon.textContent = 'visibility_off'
+      label.textContent = 'Скрыть ' + dataset.label
 
     btn.appendChild(label)
     btn.appendChild(icon)
 
-    btn.onclick = (e) -> toggleDatasetVisibility(index, btn, icon)
+    btn.onclick = (e) -> toggleDatasetVisibility(index, btn, icon, label)
 
     toggleContainer.appendChild(btn)
 
   chartElement.parentNode.insertBefore(toggleContainer, chartElement)
-
-  console.log 'dataset.closes:', chartElement.dataset.closes
-  console.log 'dataset.expectedrange:', chartElement.dataset.expectedrange
-  console.log 'dataset.candles:', chartElement.dataset.candles
 
   chart = new Chart ctx,
     type: 'line'
@@ -220,8 +302,19 @@ ready = ->
       plugins:
         legend:
           display: false
+        tooltip:
+          mode: 'index'
+          intersect: false
+        crosshair:
+          line:
+            color: 'rgba(0,0,0,0.3)'
+            width: 1
+          sync: false
+          zoom: false
+          snap: false
       interaction:
-        mode: 'index'
+        mode: 'nearest'
+        axis: 'x'
         intersect: false
       stacked: false
       scales:
@@ -234,6 +327,19 @@ ready = ->
             text: 'Цена'
           min: minVal
           max: maxVal
+        volume:
+          type: 'linear'
+          display: true
+          position: 'right'
+          title:
+            display: true
+            text: 'Объёмы'
+          grid:
+            drawOnChartArea: false
+          min: 0
+          max: Math.max.apply(null, volumes) * 18
+          ticks:
+            maxTicksLimit: 4
         macd:
           type: 'linear'
           display: true
@@ -254,6 +360,5 @@ ready = ->
           max: 100
           grid:
             drawOnChartArea: false
-
 
 $(document).on 'turbolinks:load turbo:load', ready
