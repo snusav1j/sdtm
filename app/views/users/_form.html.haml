@@ -1,7 +1,7 @@
 - can_change = @user.has_change_rights?(current_user)
 
 .user-form-block
-  = form_for @user,  html: { id: 'user-form' } do |f|
+  = form_for @user, html: { id: 'user-form' } do |f|
     .row
       .col-md-6.user-info-block
         .row
@@ -18,4 +18,25 @@
             .field
               = f.label "Почта"
               = f.text_field :email, placeholder: "Почта", type: :email, required: false, autocomplete: "new-password"
-      -# .col-md-6.user-settings-block
+        .row
+          .col-md-6
+            .field
+              = f.label "Пароль"
+              = f.password_field :password, placeholder: "Пароль", autocomplete: "new-password"
+          .col-md-6
+            .field
+              = f.label "Подтверждение пароля"
+              = f.password_field :password_confirmation, placeholder: "Подтверждение пароля", autocomplete: "new-password"
+      .col-md-6.user-settings-block
+        .row
+          .col-md-12
+            .field
+              = f.label "Роль"
+              = f.select :role, User.get_roles, {}, class: "form-control"
+        .row
+          .col-md-12
+            .field
+              = f.label "Баланс"
+              = f.number_field :balance, step: 0.01, class: "form-control"
+    - if can_change
+      = f.submit (@user.new_record? ? "Создать" : "Обновить"), class: "btn btn-primary mt-3"

@@ -62,8 +62,8 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def handle_routing_error
-    flash[:danger] = "Имя ошибки"
-    redirect_to root_path
-  end
+  # def handle_routing_error
+  #   flash[:danger] = "Имя ошибки"
+  #   redirect_to root_path
+  # end
 end

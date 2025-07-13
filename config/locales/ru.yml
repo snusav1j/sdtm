@@ -1,4 +1,13 @@
 ru:
+  devise:
+    failure:
+      unauthenticated: "Вы не авторизованы"
+      user:
+        unauthenticated: "Выход из системы"
+    sessions:
+      signed_in: "Вы успешно вошли в систему"
+      user:
+        signed_in: "Вход в систему"
   date:
     formats:
       default: "%d.%m.%Y"

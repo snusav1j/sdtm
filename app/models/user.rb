@@ -7,6 +7,10 @@ class User < ApplicationRecord
   has_many :dice_games
   has_many :dice_game_settings
 
+  def self.get_roles
+    []
+  end
+
   def auto_play_bet_amount
     user_dice_game_settings = DiceGameSetting.find_by(user_id: self.id)
     if user_dice_game_settings
