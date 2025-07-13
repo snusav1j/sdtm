@@ -16,8 +16,6 @@ Rails.application.routes.draw do
   get '/500', to: 'errors#internasal_server_error'
   get '/400', to: 'errors#bad_reqsauest'
 
-  match '*path', to: 'application#route_not_found', via: :all
-
   root "home#index"
   
   ###
@@ -62,4 +60,5 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server => '/cable'
+  match '*path', to: 'application#route_not_found', via: :all
 end
