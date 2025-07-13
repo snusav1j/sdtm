@@ -20,11 +20,11 @@
       .col-md-6
         .field
           = f.label "Пароль"
-          = f.password_field :password, placeholder: "Пароль", autocomplete: "new-password", required: true
+          = f.password_field :password, placeholder: "Пароль", autocomplete: "new-password", required: !@user.id.present?
       .col-md-6
         .field
           = f.label "Подтверждение пароля"
-          = f.password_field :password_confirmation, placeholder: "Подтверждение пароля", autocomplete: "new-password", required: true
+          = f.password_field :password_confirmation, placeholder: "Подтверждение пароля", autocomplete: "new-password", required: !@user.id.present?
     .row
       .col-md-12
         .field

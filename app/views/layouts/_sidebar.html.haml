@@ -7,12 +7,11 @@
             = logo_icon
     .side-bar-main-menu.with-hidden-scrollbar-y
       .nav-items
-        - if current_user && current_user.dev?
-          .nav
-            = link_to users_path do
-              .nav-item{ class: active_sidebar?(users_path) ? 'active' : 'inactive' }
-                = g_icon(:group)
-                %strong= "Пользователи"
+        .nav
+          = link_to users_path do
+            .nav-item{ class: active_sidebar?(users_path) ? 'active' : 'inactive' }
+              = g_icon(:group)
+              %strong= "Пользователи"
           
         - if current_user && current_user.dev?
           .nav
@@ -21,12 +20,12 @@
                 = g_icon(:casino)
                 %strong= "Кости"
 
-        
-        .nav
-          = link_to forecasts_path do
-            .nav-item{ class: active_sidebar?(forecasts_path) ? 'active' : 'inactive' }
-              = g_icon("currency_bitcoin")
-              %strong= "Прогноз"
+        - if current_user && current_user.crypto_trader? || current_user && current_user.dev?
+          .nav
+            = link_to forecasts_path do
+              .nav-item{ class: active_sidebar?(forecasts_path) ? 'active' : 'inactive' }
+                = g_icon("currency_bitcoin")
+                %strong= "Прогноз"
 
   .side-bar-dop-menu
     .nav-items
@@ -35,5 +34,4 @@
           .nav-item{ class: active_sidebar?('#') ? 'active' : 'inactive' }
             = g_icon(:settings)
             %strong= "Настройки"
-    
     

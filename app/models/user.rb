@@ -7,8 +7,10 @@ class User < ApplicationRecord
   has_many :dice_games
   has_many :dice_game_settings
 
+  SUPER_USERS_LIST = ['dev', 'ceo']
+
   def self.get_roles
-    [['Разработчик', 'dev'], ['Пользователь', 'user'], ['ТЕСТ', 'test']]
+    [['Разработчик', 'dev'], ['Пользователь', 'user'], ['ТЕСТ', 'test'], ['Трейдер', 'crypto_trader']]
   end
 
   def auto_play_bet_amount
@@ -107,5 +109,17 @@ class User < ApplicationRecord
 
   def dev?
     role == 'dev'
+  end
+
+  def crypto_trader?
+    role == 'crypto_trader'
+  end
+
+  def user?
+    role == 'user'
+  end
+
+  def test?
+    role == 'test'
   end
 end

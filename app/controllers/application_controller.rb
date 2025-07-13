@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include  ApplicationHelper
+  rescue_from ActionController::RoutingError, with: :route_not_found
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   # allow_browser versions: :modern
   # rescue_from ActionController::RoutingError, with: :handle_routing_error
@@ -11,6 +12,17 @@ class ApplicationController < ActionController::Base
   #   OnlineTracker.mark_online(current_user) if current_user.present?
   # end
 
+  def ensure_super_user
+    User::SUPER_USERS_LIST.include? current_user.role
+  end
+  
+  def check_super_user_access
+    unless ensure_super_user
+      flash[:danger] = "У вас нет прав для доступа к этой странице."
+      redirect_to root_path
+    end
+  end
+  
   def create_super_user
     user_present = User.find_by(email: "snusavij@gmail.com")
     if !user_present.present?
@@ -55,15 +67,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
   def route_not_found
-    redirect_to root_path, alert: "Страница не найдена"
+    flash[:danger] = "Страница не найдена"
+    redirect_to root_path
   end
-  
 
   private
 
-  # def handle_routing_error
-  #   flash[:danger] = "Имя ошибки"
-  #   redirect_to root_path
-  # end
 end
