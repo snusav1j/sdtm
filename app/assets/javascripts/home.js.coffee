@@ -1,5 +1,4 @@
 ready = ->
-  console.log('Flash toastr ready fired')
   flashContainer = document.getElementById('flash-container')
   return unless flashContainer?
 
@@ -13,7 +12,6 @@ ready = ->
     else
       type = 'primary'
 
-    console.log("Calling toastr for type:", type, "message:", el.textContent.trim())
 
     if window.toastr? and typeof window.toastr[type] is 'function'
       window.toastr[type](el.textContent.trim())

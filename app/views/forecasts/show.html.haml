@@ -1,15 +1,16 @@
-.space-between{ style: "align-items: center; margin-bottom: 15px;" }
-  = link_to forecasts_path do
-    %span.text-muted.text-xxl= fa_icon "arrow-left"
+.space-between.content-panel-header{ style: "align-items: center; margin-bottom: 15px;" }
 
+  %div
+    = link_to forecasts_path, class: "btn small-btn gradient-hover", style: "margin-right: 15px;" do
+      = fa_icon "arrow-left"
+    %span
+      %span Прогноз по 
+      %strong= "#{@forecast.symbol} (#{@forecast.timeframe})"
   = button_to "Обновить прогноз", forecast_path(@forecast), method: :patch, class: "btn-primary small-btn", form: { data: { turbo: false } }
 
 .filled-block
   .row
     .col-md-6
-      %div
-        %span Прогноз по 
-        %strong= "#{@forecast.symbol} (#{@forecast.timeframe})"
       %div
         %span Прогноз направления: 
         %strong= @forecast.direction

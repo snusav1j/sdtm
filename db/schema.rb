@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_13_162541) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_13_183931) do
   create_table "dice_game_settings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.float "auto_play_bet_amount"
@@ -80,6 +80,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_13_162541) do
     t.string "lastname"
     t.float "balance", default: 0.0, null: false
     t.string "image_name"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

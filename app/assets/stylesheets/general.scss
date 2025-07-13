@@ -492,7 +492,9 @@ textarea:active{
   background: var(--danger) !important;
   transition: .3s ease;
   color: var(--main-text-color-3) !important;
+  
 }
+
 .btn-default{
   background-size: 0% 100%;
   transition: background-color .5s;
@@ -592,6 +594,11 @@ body{
   display: flex;
   align-items: center;
   gap: 10px;
+}
+.content-panel-header{
+  background: var(--table-block-color);
+  padding: 15px;
+  border-radius: var(--xl-border-radius);
 }
 .flex-row{
   display: flex;

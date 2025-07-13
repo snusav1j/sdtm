@@ -35,5 +35,5 @@
     -#     .field
     -#       = f.label "Баланс"
     -#       = f.number_field :balance, step: 0.01, class: "form-control"
-    - if can_change
-      = f.submit (@user.new_record? ? "Создать" : "Обновить"), class: "btn btn-primary mt-3"
+    - if can_change && !@user.id.present?
+      = f.submit (@user.new_record? ? "Создать" : "Обновить"), class: "btn btn-primary mt-3", style: "width: 100%;"

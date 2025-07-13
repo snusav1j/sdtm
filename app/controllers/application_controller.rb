@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
 
 
   def route_not_found
-    flash[:danger] = "Страница не найдена"
+    # flash[:danger] = "Страница не найдена"
     redirect_to root_path
   end
 

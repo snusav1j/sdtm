@@ -5,9 +5,12 @@
   .back-to-users
     - user_back_link = can_change ? users_path : root_path
 
-    .space-between
-      = link_to user_back_link do
-        %span.text-muted.text-xxl= fa_icon "arrow-left"
+    .space-between.content-panel-header
+      %div
+        = link_to user_back_link, class: "btn small-btn gradient-hover", style: "margin-right: 15px;" do
+          = fa_icon "arrow-left"
+        - if !@user.online?
+          %span.text-muted= "Последний раз был в сети #{small_datetime @user.current_sign_in_at}" if @user.current_sign_in_at
       - if can_change || current_user == @user
         = link_to edit_user_path(@user) do
           .small-btn.btn-primary= g_icon 'edit'

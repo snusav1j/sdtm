@@ -1,8 +1,8 @@
 .row
   .col-md-12
-    .edit-user-title
-      = link_to user_path(@user) do
-        %span.text-muted.text-xxl= fa_icon "arrow-left"
+    .edit-user-title.content-panel-header
+      = link_to user_path(@user), class: "btn small-btn gradient-hover", style: "margin-right: 15px;" do
+        = fa_icon "arrow-left"
       .space-between{ style: "align-items: center;" }
         %div
           %span.text-xxl.text-bold Редактировать пользователя
