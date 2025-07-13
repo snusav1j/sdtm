@@ -5,7 +5,9 @@ Rails.application.configure do
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
-
+  config.time_zone = 'Moscow'
+  config.active_record.default_timezone = :utc  # хранить в БД в UTC
+  
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
   config.eager_load = true
   config.action_cable.url = "wss://vexodus.ru/cable"

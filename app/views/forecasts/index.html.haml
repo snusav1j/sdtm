@@ -24,12 +24,12 @@
         %tr
           %th.text-muted #
           %th Символ
-
           %th Вероятность (%)
           %th Доп. вероятность коррекции (%)
           %th Ожидаемый минимум
           %th Ожидаемый максимум
           %th Средняя цель
+          %th Дата
           %th
       %tbody
         - @forecasts.each do |forecast|
@@ -55,6 +55,7 @@
             %td= max_price
             %td= avg_target
 
+            %td= small_datetime(forecast.updated_at)
             %td
               = link_to forecast_path(forecast), data: { turbo_frame: "_top" } do
                 .btn.mini-btn.gradient-hover= g_icon 'visibility'
