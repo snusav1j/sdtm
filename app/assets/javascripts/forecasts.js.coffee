@@ -12,7 +12,11 @@ ready = ->
         results: results
     minimumInputLength: 2
     language:
-      inputTooShort: (args) -> ""
+      inputTooShort: (args) -> ""  # Пустая строка вместо стандартного сообщения
+      searching: -> "Поиск"
+      noResults: -> "Совпадений не найдено"
+      errorLoading: -> "Ошибка загрузки результатов"
+
 
   # chart
   chartElement = document.getElementById('priceChart')
