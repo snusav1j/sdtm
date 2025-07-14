@@ -1,4 +1,4 @@
 = form_with url: "/users/update_user_image", method: :post, multipart: true, id: "update_user_image", local: false do |f|
   %label{ for: "user_image" } Загрузить фото
   = f.file_field :user_image_file
-  = f.hidden_field :user_id, value: user.id
+  = f.hidden_field :user_id, value: user ? user.id : nil

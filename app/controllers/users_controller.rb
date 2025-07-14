@@ -79,12 +79,15 @@ class UsersController < ApplicationController
   end
 
   def user_image_modal
-
+    user_id = params[:user_id]
+    @user = User.find_by_id(user_id)
   end
 
   def popup_balance_modal
-
+    user_id = params[:user_id]
+    @user = User.find_by_id(user_id)
   end
+
 
   private
 
