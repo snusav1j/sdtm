@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: %i[ show edit update destroy update_user_image user_image_modal popup_balance_modal ]
+  before_action :set_user, only: %i[ show edit update destroy ]
   before_action :check_super_user_access, only: %i[ edit update create destroy ]
   def index
     @users = User.all
